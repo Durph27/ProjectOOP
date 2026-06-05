@@ -1,0 +1,29 @@
+package com.humanitarian.collector;
+
+import com.humanitarian.model.SocialMediaPost;
+import com.humanitarian.model.enums.Platform;
+
+import java.time.LocalDate;
+import java.util.List;
+
+/**
+ * Collector mẫu cho Facebook Graph API.
+ */
+public class FacebookCollector extends AbstractCollector {
+
+    public FacebookCollector() {
+        super(Platform.FACEBOOK);
+    }
+
+    @Override
+    public boolean isAvailable() {
+        return false; // Cần Facebook Graph API access token
+    }
+
+    @Override
+    protected List<SocialMediaPost> doCollect(List<String> keywords,
+                                               LocalDate startDate, LocalDate endDate) {
+        logger.info("Facebook collector chưa được implement. Sử dụng CSV collector thay thế.");
+        return List.of();
+    }
+}

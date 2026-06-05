@@ -1,0 +1,101 @@
+id,platform,content,author,timestamp,url,likes,shares,comments,location
+1,facebook,"Bão Yagi đổ bộ vào Quảng Ninh gây thiệt hại nặng nề, nhiều nhà cửa bị tốc mái, cây cối đổ la liệt. Mong mọi người bình an!",user01,2024-09-07 08:30:00,,45,12,8,Quảng Ninh
+2,twitter,"Cập nhật tình hình bão số 3: Gió giật cấp 17 tại Hạ Long, mất điện diện rộng. Mọi người cẩn thận! #baoYagi #baoso3",user02,2024-09-07 10:15:00,,120,56,23,Hạ Long
+3,facebook,"Sạt lở đất kinh hoàng ở Lào Cai, nhiều người mất tích. Quá đau lòng 😭",user03,2024-09-08 06:00:00,,230,89,45,Lào Cai
+4,twitter,"Ngập lụt nghiêm trọng tại Hà Nội, giao thông tê liệt hoàn toàn. Xe cộ chìm trong nước 😡 #baoYagi",user04,2024-09-08 09:00:00,,89,34,19,Hà Nội
+5,facebook,"Cảm ơn các chiến sĩ bộ đội đã kịp thời cứu người dân khỏi vùng lũ. Quá cảm động ❤️ Đoàn kết là sức mạnh!",user05,2024-09-08 14:00:00,,567,234,78,Yên Bái
+6,twitter,"Nhà tôi ở Hải Phòng bị tốc mái hoàn toàn, đồ đạc hư hỏng hết. Không biết phải làm sao 😢",user06,2024-09-08 16:30:00,,78,15,32,Hải Phòng
+7,facebook,"Thực phẩm cứu trợ đã đến tay bà con vùng lũ Yên Bái. Cảm ơn các nhà hảo tâm! Gạo, mì tôm, nước uống đầy đủ 🙏",user07,2024-09-09 08:00:00,,345,123,56,Yên Bái
+8,twitter,"Cầu Phong Châu sập do lũ, giao thông chia cắt hoàn toàn. Người dân Phú Thọ bị cô lập 😰 #baoYagi",user08,2024-09-09 07:30:00,,456,178,67,Phú Thọ
+9,facebook,"Đoàn y tế tình nguyện đã có mặt tại Lào Cai, khám bệnh miễn phí cho bà con. Rất chuyên nghiệp và tận tình! 👍",user09,2024-09-09 12:00:00,,234,89,34,Lào Cai
+10,twitter,"Mất điện đã 3 ngày, mất nước, mất sóng. Cuộc sống quá khó khăn. Cơ sở hạ tầng thiệt hại nghiêm trọng #baoso3",user10,2024-09-09 15:00:00,,67,23,15,Quảng Ninh
+11,facebook,"Quyên góp được 500 triệu cho bà con vùng bão. Cảm ơn tấm lòng của mọi người! Tiền đã chuyển trực tiếp đến tay người dân 💕",user11,2024-09-10 09:00:00,,890,345,123,Hà Nội
+12,twitter,"Hàng ngàn hecta lúa bị ngập, nông dân mất trắng vụ mùa. Thiệt hại kinh tế quá lớn. Ai sẽ hỗ trợ đây?",user12,2024-09-10 10:30:00,,156,67,28,Thái Bình
+13,facebook,"Đường sá hư hỏng nặng nề, xe cứu trợ không thể tiếp cận vùng sạt lở. Giao thông vẫn tê liệt 😤",user13,2024-09-10 14:00:00,,234,89,45,Lào Cai
+14,twitter,"Cảm ơn chính phủ đã hỗ trợ tiền mặt kịp thời cho các hộ gia đình bị ảnh hưởng. Mỗi hộ 10 triệu đồng ✅",user14,2024-09-11 08:30:00,,345,134,56,Yên Bái
+15,facebook,"Nhà tạm được dựng lên cho bà con mất nhà, nhưng chất lượng quá kém, mưa vẫn dột. Cần cải thiện ngay!",user15,2024-09-11 11:00:00,,178,67,89,Hải Phòng
+16,twitter,"Xe chở gạo, mì tôm cứu trợ đã đến Yên Bái. Thực phẩm đầy đủ, phân phối công bằng. Bà con rất vui! 🎉 #cuutro",user16,2024-09-11 13:00:00,,456,189,78,Yên Bái
+17,facebook,"Tôi mất hết tài sản, xe máy trôi theo lũ, tivi tủ lạnh hỏng hết. 10 năm tích góp mất sạch 😭😭",user17,2024-09-11 16:00:00,,345,123,167,Lào Cai
+18,twitter,"Trạm y tế di động hoạt động 24/7 tại vùng lũ. Thuốc men đầy đủ, bác sĩ tận tâm. Cảm ơn đội ngũ y tế! 🙏💪",user18,2024-09-12 08:00:00,,267,98,45,Yên Bái
+19,facebook,"Giao thông đã được khôi phục một phần ở Hà Nội, nhưng nhiều tuyến đường vẫn ngập sâu. Di chuyển rất khó khăn",user19,2024-09-12 10:00:00,,123,45,23,Hà Nội
+20,twitter,"Chung tay vì miền Bắc! Đã quyên góp 200 triệu qua tài khoản cứu trợ. Minh bạch và công khai. Cùng nhau vượt qua! ❤️",user20,2024-09-12 14:00:00,,678,234,89,Hồ Chí Minh
+21,facebook,"Nhà cửa tại Quảng Ninh bị phá hủy nặng nề. Nhiều tòa nhà cao tầng cũng bị ảnh hưởng, kính vỡ, mái tôn bay khắp nơi",user21,2024-09-07 12:00:00,,189,78,34,Quảng Ninh
+22,twitter,"Lũ quét kinh hoàng ở Lào Cai. Bùn đất tràn vào nhà, tang thương khắp nơi. Quá sợ hãi 😱",user22,2024-09-08 11:00:00,,345,145,67,Lào Cai
+23,facebook,"Điện lực đang nỗ lực khắc phục sự cố, dự kiến 2-3 ngày nữa mới có điện trở lại. Mong bà con kiên nhẫn",user23,2024-09-09 09:00:00,,89,34,23,Quảng Ninh
+24,twitter,"Thất vọng với tốc độ cứu trợ. Đã 3 ngày chưa nhận được hỗ trợ gì. Nhà ở bị hỏng, không có chỗ ở. Rất bức xúc!",user24,2024-09-10 08:00:00,,267,89,123,Hải Phòng
+25,facebook,"Đội tình nguyện sinh viên đã đến giúp dọn dẹp bùn đất sau lũ. Tinh thần đoàn kết tuyệt vời! Cảm ơn các bạn trẻ 👏",user25,2024-09-12 09:00:00,,456,178,67,Yên Bái
+26,twitter,"Nuôi trồng thủy sản thiệt hại 100%. Cá, tôm trôi hết. Nông dân chúng tôi trắng tay 😔",user26,2024-09-09 14:00:00,,198,67,45,Quảng Ninh
+27,facebook,"Nhà nước hỗ trợ xây nhà tạm cho bà con mất nhà rất nhanh chóng. Tuy còn đơn giản nhưng đã có chỗ ở an toàn. Cảm ơn!",user27,2024-09-13 10:00:00,,345,134,56,Lào Cai
+28,twitter,"Sữa, bánh kẹo cho trẻ em vùng lũ đã được phân phối. Các cháu vui lắm. Cảm động quá! 🥰 #cuutro",user28,2024-09-13 08:00:00,,567,234,89,Yên Bái
+29,facebook,"Cột điện đổ la liệt, đường dây điện đứt khắp nơi. Nguy hiểm cho người dân đi lại. Hạ tầng điện lực hư hỏng nặng",user29,2024-09-08 13:00:00,,145,56,23,Hải Phòng
+30,twitter,"Ca nô cứu hộ đã tiếp cận được vùng bị cô lập. Cứu được 50 người bị mắc kẹt. Cảm ơn lực lượng cứu hộ! 🙏💪",user30,2024-09-09 11:00:00,,890,345,123,Phú Thọ
+31,facebook,"Mì tôm, nước uống đã hết, nhưng chưa có đợt cứu trợ mới. Bà con thiếu thực phẩm. Cần hỗ trợ gấp!",user31,2024-09-10 16:00:00,,234,89,67,Lào Cai
+32,twitter,"Bệnh viện Yên Bái quá tải bệnh nhân sau bão. Thiếu thuốc, thiếu giường. Y tế cần được tăng cường 😰",user32,2024-09-09 16:00:00,,178,67,45,Yên Bái
+33,facebook,"Đã nhận được 5 triệu tiền hỗ trợ từ chính quyền địa phương. Tuy chưa nhiều nhưng rất kịp thời. Cảm ơn! 👍",user33,2024-09-12 11:00:00,,234,89,34,Thái Bình
+34,twitter,"Xe tải chở hàng cứu trợ bị kẹt trên đường do sạt lở. Hàng ngàn thùng mì tôm không thể vận chuyển đến nơi 😤",user34,2024-09-10 12:00:00,,345,123,78,Lào Cai
+35,facebook,"Hy vọng sẽ sớm khắc phục được hậu quả bão Yagi. Miền Bắc kiên cường! Đoàn kết sẽ vượt qua tất cả ❤️",user35,2024-09-14 09:00:00,,678,267,123,Hà Nội
+36,twitter,"Nhà máy ở Hải Phòng ngừng hoạt động do bão, hàng ngàn công nhân mất việc tạm thời. Kinh tế bị gián đoạn nghiêm trọng",user36,2024-09-08 15:00:00,,156,56,34,Hải Phòng
+37,facebook,"Phân phối tiền cứu trợ không minh bạch ở một số nơi. Người dân bức xúc vì không được hỗ trợ đúng người cần",user37,2024-09-13 14:00:00,,456,189,234,Lào Cai
+38,twitter,"Cảm ơn Mặt trận Tổ quốc đã tổ chức phát gạo cho bà con kịp thời. Mỗi hộ 50kg gạo. Rất hài lòng! ✅🙏",user38,2024-09-14 08:00:00,,345,134,56,Yên Bái
+39,facebook,"Nước lũ rút dần, lộ ra cảnh tượng tan hoang. Bùn đất ngập nhà, mùi hôi thối. Cuộc sống quá khổ cực 😢",user39,2024-09-11 09:00:00,,267,98,67,Yên Bái
+40,twitter,"Đường cao tốc Hà Nội - Lào Cai đã thông xe trở lại! Tin vui cho việc vận chuyển hàng cứu trợ 🎉 #baoso3",user40,2024-09-13 10:00:00,,456,178,56,Hà Nội
+41,facebook,"Trẻ em vùng lũ thiếu sách vở, quần áo. Trường học bị ngập chưa thể mở cửa. Tương lai các em thế nào? 😔",user41,2024-09-12 15:00:00,,345,134,89,Lào Cai
+42,twitter,"Bác sĩ tình nguyện khám chữa bệnh miễn phí cho 500 người dân vùng lũ. Y tế rất chu đáo và tận tình 👍❤️",user42,2024-09-14 11:00:00,,567,234,78,Yên Bái
+43,facebook,"Sạt lở đất vùi lấp nhiều ngôi nhà ở Lào Cai. Lực lượng cứu hộ đang tìm kiếm nạn nhân mất tích. Cầu nguyện cho mọi người 🙏",user43,2024-09-08 08:00:00,,890,345,167,Lào Cai
+44,twitter,"Xe máy bị lũ cuốn trôi, ô tô ngập nước hỏng máy. Mất hết tài sản di chuyển. Quá thiệt hại!",user44,2024-09-09 13:00:00,,145,56,34,Hà Nội
+45,facebook,"Lều bạt cứu trợ chất lượng tốt, che mưa che nắng. Cảm ơn đơn vị tài trợ! Bà con có chỗ ở tạm an toàn ✅",user45,2024-09-13 09:00:00,,234,89,45,Yên Bái
+46,twitter,"Vẫn chưa có điện sau 5 ngày. Thực phẩm bắt đầu hỏng. Không có nước sạch. Cơ sở hạ tầng tê liệt hoàn toàn 😡",user46,2024-09-12 08:30:00,,267,98,56,Quảng Ninh
+47,facebook,"Hội Chữ thập đỏ phát thuốc và khẩu trang cho bà con vùng lũ. Phòng chống dịch bệnh sau bão rất quan trọng 👏",user47,2024-09-14 14:00:00,,178,67,23,Lào Cai
+48,twitter,"Cánh đồng lúa Thái Bình chìm trong biển nước. Nông dân khóc vì mất mùa. Kinh tế nông nghiệp thiệt hại quá lớn 😭",user48,2024-09-09 10:00:00,,345,134,67,Thái Bình
+49,facebook,"Công ty tư nhân hỗ trợ xây lại cầu tạm tại Phú Thọ. Giao thông đã đi lại được. Cảm ơn các doanh nghiệp! 💪",user49,2024-09-15 10:00:00,,456,178,89,Phú Thọ
+50,twitter,"Cuối cùng cũng có điện trở lại! Cảm ơn các anh thợ điện đã làm việc ngày đêm. Hạ tầng đang dần phục hồi 🎉✅",user50,2024-09-14 16:00:00,,567,234,78,Quảng Ninh
+51,facebook,"Chồng tôi bị thương do mái tôn bay trúng. Đưa đi bệnh viện cấp cứu kịp thời. Y tế xử lý rất nhanh 🙏",user51,2024-09-08 10:00:00,,234,89,56,Hải Phòng
+52,twitter,"Nhà cửa tan hoang sau bão. Phải sống tạm trong lều. Nhà ở là vấn đề cấp bách nhất lúc này 😢",user52,2024-09-10 07:00:00,,189,67,45,Quảng Ninh
+53,facebook,"Hàng cứu trợ phân phối đều cho bà con. Ai cũng có phần. Minh bạch, công bằng. Tổ chức rất tốt! 👍❤️",user53,2024-09-12 13:00:00,,345,134,67,Yên Bái
+54,twitter,"Trường học bị hư hỏng nặng, học sinh phải nghỉ học. Cơ sở hạ tầng giáo dục thiệt hại. Khi nào các em mới được đi học?",user54,2024-09-11 14:00:00,,156,56,34,Lào Cai
+55,facebook,"Tinh thần tương thân tương ái của người Việt Nam thật tuyệt vời! Cả nước hướng về miền Bắc. Lạc quan về sự phục hồi! 💕",user55,2024-09-15 08:00:00,,890,345,123,Hồ Chí Minh
+56,twitter,"Thiếu nước sạch nghiêm trọng. Phải dùng nước lũ đã xử lý. Lo ngại dịch bệnh bùng phát 😰 #baoYagi",user56,2024-09-10 11:00:00,,178,67,45,Yên Bái
+57,facebook,"Máy phát điện được chuyển đến vùng mất điện. Bà con có thể sạc điện thoại, liên lạc với người thân. Cảm ơn! 🙏",user57,2024-09-11 10:00:00,,234,89,34,Quảng Ninh
+58,twitter,"Giá lương thực tăng vọt sau bão. Nhiều người lợi dụng thiên tai để trục lợi. Thật đáng lên án! 😡👎",user58,2024-09-10 13:00:00,,456,178,89,Hà Nội
+59,facebook,"Xe cứu thương vượt lũ đưa sản phụ đi sinh. May mắn mẹ tròn con vuông. Cảm ơn đội ngũ y tế anh hùng! ❤️🙏",user59,2024-09-09 18:00:00,,678,267,123,Phú Thọ
+60,twitter,"Nhà cửa xây kiên cố cũng không chịu nổi sức gió cấp 17. Bay mái, đổ tường. Thiệt hại nhà ở quá nghiêm trọng",user60,2024-09-08 12:00:00,,234,89,45,Quảng Ninh
+61,facebook,"Đã 1 tuần sau bão, cuộc sống dần trở lại bình thường. Cảm ơn sự hỗ trợ từ khắp nơi. Chúng tôi sẽ vượt qua! 💪🎉",user61,2024-09-15 12:00:00,,567,234,89,Yên Bái
+62,twitter,"Hàng chục nghìn con gia cầm chết do ngập. Chăn nuôi bị xóa sổ. Nông dân mất kế sinh nhai 😔",user62,2024-09-09 15:30:00,,145,56,23,Thái Bình
+63,facebook,"Nước sạch cứu trợ đã về đến thôn, bà con không còn phải lo thiếu nước uống nữa. Thực phẩm tốt, nước sạch đủ dùng 👍",user63,2024-09-13 11:00:00,,345,134,56,Lào Cai
+64,twitter,"Chính quyền hứa hỗ trợ xây nhà mới cho hộ bị sập nhà. Hy vọng sẽ được thực hiện sớm 🙏 #cuutro",user64,2024-09-14 09:00:00,,267,98,45,Hải Phòng
+65,facebook,"Tôi mất cả gia đình trong vụ sạt lở. Đau đớn không thể nào diễn tả. Cuộc đời tôi đã chấm dứt 😭😭😭",user65,2024-09-08 20:00:00,,1234,567,345,Lào Cai
+66,twitter,"Quỹ cứu trợ trung ương đã giải ngân 1000 tỷ đồng. Tiền mặt hỗ trợ đang được chuyển đến các địa phương ✅",user66,2024-09-12 09:30:00,,456,178,67,Hà Nội
+67,facebook,"Lối đi vào thôn bị sạt lở chặn hoàn toàn. Không thể vận chuyển hàng cứu trợ. Giao thông là vấn đề lớn nhất! 😤",user67,2024-09-10 15:00:00,,267,98,56,Lào Cai
+68,twitter,"Cơm nóng phục vụ bà con vùng lũ miễn phí. Thực phẩm nóng sốt, ngon miệng. Cảm ơn các bếp ăn tình nguyện! ❤️👏",user68,2024-09-11 12:00:00,,345,134,45,Yên Bái
+69,facebook,"Nhiều người dân phản ánh nhà ở tạm quá chật, không đủ chỗ cho cả gia đình. Cần giải pháp nhà ở tốt hơn",user69,2024-09-14 15:00:00,,189,67,78,Hải Phòng
+70,twitter,"Lũ rút, lộ ra hàng trăm xe ô tô ngập nước tại bãi đỗ. Tài sản cá nhân thiệt hại hàng chục tỷ đồng 😢",user70,2024-09-11 08:00:00,,234,89,34,Hà Nội
+71,facebook,"Cầu đường sắt bị lũ cuốn trôi. Hạ tầng giao thông miền Bắc thiệt hại ước tính hàng nghìn tỷ 😰",user71,2024-09-09 08:00:00,,345,134,56,Phú Thọ
+72,twitter,"Y tế sau bão: Tiêm phòng dịch bệnh cho hơn 10000 người dân. Không để dịch bệnh bùng phát sau lũ! 💪👍",user72,2024-09-15 11:00:00,,456,178,67,Yên Bái
+73,facebook,"Cảm ơn mạnh thường quân đã ủng hộ 2 tỷ đồng xây cầu mới. Tiền mặt quyên góp minh bạch, công khai. Tuyệt vời! 🎉",user73,2024-09-16 09:00:00,,678,267,123,Phú Thọ
+74,twitter,"Trẻ em thiếu sữa, thiếu tã. Vùng lũ cần hỗ trợ y tế cho trẻ nhỏ gấp! Ai có thể giúp? 🆘",user74,2024-09-10 09:30:00,,345,134,89,Lào Cai
+75,facebook,"Cuối cùng đường vào thôn đã được thông, xe chở hàng cứu trợ có thể vào. Giao thông phục hồi dần! ✅💪",user75,2024-09-14 13:00:00,,234,89,34,Lào Cai
+76,twitter,"Nhà máy nước sạch hư hỏng do bão. Người dân phải dùng nước giếng có nguy cơ ô nhiễm. Hạ tầng nước thiệt hại nặng",user76,2024-09-09 17:00:00,,178,67,45,Quảng Ninh
+77,facebook,"Tình người trong cơn lũ: Hàng xóm chia sẻ từng bát cơm, cùng nhau vượt qua khó khăn. Ấm áp và cảm động quá! ❤️🙏",user77,2024-09-10 18:00:00,,567,234,89,Yên Bái
+78,twitter,"Đê sông Hồng có nguy cơ vỡ. Hàng nghìn người dân được sơ tán khẩn cấp. Lo lắng và sợ hãi 😱😰 #baoYagi",user78,2024-09-09 06:00:00,,890,345,167,Hà Nội
+79,facebook,"Chợ dân sinh mở lại, giá cả ổn định. Thực phẩm dần đầy đủ trở lại. Cuộc sống đang phục hồi 👍",user79,2024-09-16 10:00:00,,234,89,34,Hải Phòng
+80,twitter,"Sau 2 tuần, 90% hộ dân đã có điện trở lại. Cảm ơn nỗ lực của ngành điện! Hạ tầng đang phục hồi nhanh chóng 🎉✅",user80,2024-09-20 09:00:00,,456,178,67,Quảng Ninh
+81,facebook,"Tổng thiệt hại do bão Yagi ước tính hơn 80000 tỷ đồng. Con số kinh hoàng. Nền kinh tế bị ảnh hưởng nặng nề 😰",user81,2024-09-18 11:00:00,,345,134,78,Hà Nội
+82,twitter,"Lũ nhỏ nhất 30 năm nhưng thiệt hại lại lớn nhất vì sạt lở đất. Cần đánh giá lại quy hoạch xây dựng vùng núi",user82,2024-09-15 14:00:00,,234,89,56,Lào Cai
+83,facebook,"Bà con tự tay sửa chữa nhà cửa. Tuy vất vả nhưng ai cũng lạc quan, cùng giúp đỡ nhau. Tinh thần tuyệt vời! 💪❤️",user83,2024-09-17 09:00:00,,345,134,45,Yên Bái
+84,twitter,"Lớp học tạm dưới lều bạt. Các em học sinh vẫn kiên cường đến lớp. Cảm phục tinh thần hiếu học! 👏🙏",user84,2024-09-18 08:00:00,,567,234,89,Lào Cai
+85,facebook,"Chỗ ở tạm quá nóng ban ngày, quá lạnh ban đêm. Nhà ở tạm cần được cải thiện chất lượng. Khó sống lắm 😢",user85,2024-09-16 15:00:00,,189,67,56,Hải Phòng
+86,twitter,"Viện trợ quốc tế bắt đầu đến Việt Nam. Tiền mặt, thuốc men, lều trại từ nhiều nước. Thế giới ủng hộ! 🎉❤️",user86,2024-09-13 16:00:00,,678,267,123,Hà Nội
+87,facebook,"Gia súc chết trôi theo lũ gây ô nhiễm nguồn nước nghiêm trọng. Nguy cơ dịch bệnh rất cao. Cần xử lý gấp! 😡",user87,2024-09-10 17:00:00,,234,89,67,Thái Bình
+88,twitter,"Chương trình tái thiết nhà ở đã khởi công. 500 căn nhà mới sẽ được xây. Hy vọng cho bà con! 🙏💪 #cuutro",user88,2024-09-20 10:00:00,,456,178,78,Lào Cai
+89,facebook,"Y bác sĩ làm việc liên tục 72 giờ cứu chữa nạn nhân. Quá vất vả nhưng rất đáng ngưỡng mộ. Cảm ơn! 🙏❤️👏",user89,2024-09-09 20:00:00,,890,345,167,Yên Bái
+90,twitter,"Vẫn còn 10 người mất tích sau sạt lở đất. Gia đình đau đớn chờ đợi tin tức. Quá đau buồn 😢😭 #baoYagi",user90,2024-09-12 07:00:00,,345,134,89,Lào Cai
+91,facebook,"Giao thông nội thành đã ổn định, nhưng vùng sâu vùng xa vẫn bị cô lập. Cần thêm nỗ lực phục hồi đường sá",user91,2024-09-16 11:00:00,,178,67,34,Hà Nội
+92,twitter,"Chất lượng thực phẩm cứu trợ rất tốt, đa dạng. Không chỉ mì tôm mà còn có rau, thịt, trứng. Hài lòng! 👍✅",user92,2024-09-15 13:00:00,,267,98,45,Yên Bái
+93,facebook,"Mất hết giấy tờ, chứng minh nhân dân, sổ đỏ trong lũ. Thủ tục hành chính để cấp lại rất phức tạp 😤",user93,2024-09-14 10:00:00,,156,56,78,Lào Cai
+94,twitter,"Bão Yagi đi qua nhưng nỗi đau còn ở lại. Cần sự hỗ trợ lâu dài, không chỉ cứu trợ tức thời. Hãy nhớ miền Bắc!",user94,2024-09-20 14:00:00,,345,134,56,Hà Nội
+95,facebook,"Cảm ơn hỗ trợ tiền mặt 20 triệu cho hộ có người thân tử vong. Tuy không bù đắp được mất mát nhưng rất cần thiết 🙏",user95,2024-09-15 09:00:00,,234,89,45,Lào Cai
+96,twitter,"Cầu treo Phú Thọ đã xây lại tạm. Giao thông đi lại được nhưng hạn chế tải trọng. Dần phục hồi! ✅",user96,2024-09-18 14:00:00,,189,67,23,Phú Thọ
+97,facebook,"Nhiều gia đình mất kế sinh nhai hoàn toàn. Cần chương trình tạo việc làm sau thảm họa, không chỉ hỗ trợ tiền 😔",user97,2024-09-19 11:00:00,,267,98,67,Thái Bình
+98,twitter,"Sức khỏe tâm lý sau bão: Nhiều người bị stress, mất ngủ, sợ hãi mỗi khi trời mưa. Y tế tâm lý cần được chú ý 🙏",user98,2024-09-18 16:00:00,,345,134,89,Yên Bái
+99,facebook,"Tổng kết: Hơn 5000 tỷ đồng quyên góp từ nhân dân cả nước. Tinh thần đoàn kết tuyệt vời! Cảm ơn tất cả! ❤️💕🎉",user99,2024-09-25 10:00:00,,1234,567,234,Hà Nội
+100,twitter,"Miền Bắc đang hồi sinh! Cây xanh lại mọc, nhà mới đang xây. Cuộc sống sẽ tốt đẹp trở lại. Lạc quan! 💪🎉❤️",user100,2024-09-28 09:00:00,,890,345,167,Yên Bái

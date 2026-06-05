@@ -1,0 +1,40 @@
+{
+  "categories": [
+    {
+      "id": "PEOPLE_AFFECTED",
+      "nameVi": "Người bị ảnh hưởng",
+      "nameEn": "People Affected",
+      "keywords": ["người chết", "tử vong", "mất tích", "bị thương", "thương vong", "nạn nhân", "thiệt mạng", "chết đuối", "cứu người", "mắc kẹt", "sơ tán", "di dời", "người dân", "đồng bào", "gia đình"]
+    },
+    {
+      "id": "ECONOMIC_DISRUPTION",
+      "nameVi": "Gián đoạn hoạt động kinh tế sản xuất",
+      "nameEn": "Economic/Production Disruption",
+      "keywords": ["mất mùa", "hoa màu", "nông nghiệp", "chăn nuôi", "thủy sản", "nuôi trồng", "nhà xưởng", "sản xuất", "kinh doanh", "thiệt hại kinh tế", "mất việc", "đóng cửa", "ngừng hoạt động", "vụ mùa", "cây trồng", "gia súc", "gia cầm"]
+    },
+    {
+      "id": "HOUSING_DAMAGE",
+      "nameVi": "Nhà cửa hoặc tòa nhà bị hư hỏng",
+      "nameEn": "Housing/Building Damage",
+      "keywords": ["nhà sập", "tốc mái", "nhà đổ", "hư hỏng nhà", "nhà ngập", "ngập nhà", "đổ nhà", "sập nhà", "tòa nhà", "mái tôn", "bay mái", "nứt tường", "phá hủy nhà", "nhà cửa", "trường học sập", "công trình"]
+    },
+    {
+      "id": "PERSONAL_PROPERTY_LOSS",
+      "nameVi": "Tài sản cá nhân bị mất",
+      "nameEn": "Personal Property Loss",
+      "keywords": ["mất tài sản", "xe ngập", "ô tô ngập", "xe máy hỏng", "đồ đạc", "tài sản hư", "mất đồ", "trôi xe", "thiệt hại tài sản", "mất của", "hư hỏng đồ", "ngập xe", "trôi đồ"]
+    },
+    {
+      "id": "INFRASTRUCTURE_DAMAGE",
+      "nameVi": "Cơ sở hạ tầng bị hư hỏng",
+      "nameEn": "Infrastructure Damage",
+      "keywords": ["đường sá", "cầu sập", "đường ngập", "mất điện", "cắt điện", "mất nước", "mất sóng", "đường hỏng", "cầu hỏng", "giao thông tê liệt", "cột điện đổ", "đê vỡ", "kè sạt", "hạ tầng", "viễn thông", "trạm biến áp"]
+    },
+    {
+      "id": "OTHER",
+      "nameVi": "Khác",
+      "nameEn": "Other",
+      "keywords": ["ô nhiễm", "dịch bệnh", "môi trường", "rác thải", "nước bẩn", "tâm lý", "stress", "hoang mang"]
+    }
+  ]
+}

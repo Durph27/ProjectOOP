@@ -1,0 +1,44 @@
+{
+  "disaster": {
+    "name": "Bão Yagi (Bão số 3)",
+    "nameEn": "Typhoon Yagi",
+    "startDate": "2024-09-01",
+    "endDate": "2024-09-30",
+    "peakDate": "2024-09-08",
+    "region": "Miền Bắc Việt Nam"
+  },
+  "sentiment": {
+    "provider": "dictionary",
+    "pythonApiUrl": "http://localhost:5000",
+    "batchSize": 50,
+    "timeout": 30000
+  },
+  "collection": {
+    "defaultPlatform": "csv",
+    "maxPostsPerCollection": 10000,
+    "rateLimitMs": 1000
+  },
+  "preprocessing": {
+    "enabledSteps": [
+      "html_cleaner",
+      "url_remover",
+      "emoji_handler",
+      "vietnamese_normalizer",
+      "stopword_remover"
+    ]
+  },
+  "storage": {
+    "type": "json",
+    "rawDataDir": "data/raw",
+    "processedDataDir": "data/processed",
+    "resultsDir": "data/results"
+  },
+  "analyzers": {
+    "enabled": [
+      "sentiment_timeline",
+      "damage_classification",
+      "relief_satisfaction",
+      "relief_sentiment_timeline"
+    ]
+  }
+}

@@ -1,0 +1,185 @@
+/* ===================================
+   Humanitarian Logistics Analytics
+   Main Stylesheet
+   =================================== */
+
+/* Root styling */
+.root {
+    -fx-font-family: "Segoe UI", "System", sans-serif;
+    -fx-font-size: 14px;
+    -fx-background-color: #f5f6fa;
+}
+
+/* Tab Pane */
+.tab-pane > .tab-header-area {
+    -fx-background-color: #2c3e50;
+}
+
+.tab-pane > .tab-header-area > .tab-header-background {
+    -fx-background-color: #2c3e50;
+}
+
+.tab {
+    -fx-background-color: #34495e;
+    -fx-background-radius: 5 5 0 0;
+    -fx-padding: 8 16;
+}
+
+.tab:selected {
+    -fx-background-color: #3498db;
+}
+
+.tab .tab-label {
+    -fx-text-fill: #ecf0f1;
+    -fx-font-size: 13px;
+}
+
+.tab:selected .tab-label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+/* Buttons */
+.button {
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+    -fx-font-size: 13px;
+}
+
+.button:hover {
+    -fx-opacity: 0.85;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0, 0, 2);
+}
+
+.button:pressed {
+    -fx-opacity: 0.95;
+}
+
+/* Text areas */
+.text-area {
+    -fx-background-color: white;
+    -fx-border-color: #dcdde1;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-font-size: 13px;
+}
+
+.text-area .content {
+    -fx-background-color: white;
+}
+
+/* Text fields */
+.text-field {
+    -fx-background-color: white;
+    -fx-border-color: #dcdde1;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 6 10;
+}
+
+.text-field:focused {
+    -fx-border-color: #3498db;
+}
+
+/* Tables */
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: #dcdde1;
+    -fx-border-radius: 5;
+}
+
+.table-view .column-header {
+    -fx-background-color: #2c3e50;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #f8f9fa;
+}
+
+.table-row-cell:even {
+    -fx-background-color: white;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #3498db;
+}
+
+/* Charts */
+.chart {
+    -fx-background-color: white;
+    -fx-padding: 10;
+}
+
+.chart-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.chart-legend {
+    -fx-background-color: transparent;
+}
+
+/* Line chart colors */
+.default-color0.chart-series-line { -fx-stroke: #2ecc71; -fx-stroke-width: 2px; }
+.default-color1.chart-series-line { -fx-stroke: #e74c3c; -fx-stroke-width: 2px; }
+.default-color2.chart-series-line { -fx-stroke: #95a5a6; -fx-stroke-width: 2px; }
+.default-color3.chart-series-line { -fx-stroke: #3498db; -fx-stroke-width: 2px; }
+.default-color4.chart-series-line { -fx-stroke: #f39c12; -fx-stroke-width: 2px; }
+
+.default-color0.chart-line-symbol { -fx-background-color: #2ecc71; }
+.default-color1.chart-line-symbol { -fx-background-color: #e74c3c; }
+.default-color2.chart-line-symbol { -fx-background-color: #95a5a6; }
+.default-color3.chart-line-symbol { -fx-background-color: #3498db; }
+.default-color4.chart-line-symbol { -fx-background-color: #f39c12; }
+
+/* Bar chart colors */
+.default-color0.chart-bar { -fx-bar-fill: #3498db; }
+.default-color1.chart-bar { -fx-bar-fill: #e74c3c; }
+.default-color2.chart-bar { -fx-bar-fill: #95a5a6; }
+
+/* Checkboxes */
+.check-box {
+    -fx-font-size: 13px;
+}
+
+.check-box .box {
+    -fx-background-radius: 3;
+    -fx-border-radius: 3;
+}
+
+/* Separator */
+.separator .line {
+    -fx-border-color: #dcdde1;
+}
+
+/* Labels */
+.label {
+    -fx-text-fill: #2c3e50;
+}
+
+/* ScrollPane */
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: #f5f6fa;
+}
+
+/* Progress bar */
+.progress-bar > .bar {
+    -fx-background-color: #3498db;
+    -fx-background-radius: 3;
+}
+
+.progress-bar > .track {
+    -fx-background-color: #dcdde1;
+    -fx-background-radius: 3;
+}

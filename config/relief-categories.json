@@ -1,0 +1,34 @@
+{
+  "categories": [
+    {
+      "id": "SHELTER",
+      "nameVi": "Nhà ở",
+      "nameEn": "Shelter/Housing",
+      "keywords": ["nhà ở", "lều trại", "chỗ ở", "tái định cư", "nhà tạm", "lều", "bạt", "mái che", "nhà ở tạm", "nơi trú", "lán trại", "nhà tình thương"]
+    },
+    {
+      "id": "TRANSPORTATION",
+      "nameVi": "Giao thông",
+      "nameEn": "Transportation",
+      "keywords": ["giao thông", "đường xá", "di chuyển", "vận chuyển", "xe cứu trợ", "tàu", "thuyền cứu hộ", "cầu", "đường bộ", "phương tiện", "ca nô", "xuồng"]
+    },
+    {
+      "id": "FOOD",
+      "nameVi": "Thực phẩm",
+      "nameEn": "Food",
+      "keywords": ["thực phẩm", "lương thực", "gạo", "mì tôm", "nước uống", "đồ ăn", "nhu yếu phẩm", "thức ăn", "cơm", "sữa", "bánh", "đồ hộp", "nước sạch", "thực phẩm cứu trợ"]
+    },
+    {
+      "id": "MEDICAL",
+      "nameVi": "Hỗ trợ y tế",
+      "nameEn": "Medical Support",
+      "keywords": ["y tế", "thuốc", "bác sĩ", "bệnh viện", "sức khỏe", "cấp cứu", "khám bệnh", "điều trị", "vệ sinh", "dịch bệnh", "chăm sóc sức khỏe", "đội ngũ y tế", "trạm y tế"]
+    },
+    {
+      "id": "CASH",
+      "nameVi": "Tiền mặt",
+      "nameEn": "Cash/Financial Aid",
+      "keywords": ["tiền mặt", "tiền cứu trợ", "hỗ trợ tài chính", "quyên góp", "từ thiện", "ủng hộ", "tiền", "tài trợ", "hỗ trợ tiền", "chuyển khoản", "đóng góp", "quỹ cứu trợ"]
+    }
+  ]
+}
