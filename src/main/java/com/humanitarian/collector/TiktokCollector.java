@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * Collector mẫu cho TikTok API.
+ * Collector sample for Tiktok
  */
 public class TiktokCollector extends AbstractCollector {
 
@@ -17,7 +17,7 @@ public class TiktokCollector extends AbstractCollector {
 
     @Override
     public boolean isAvailable() {
-        return false; // Cần TikTok API key
+        return false;
     }
 
     @Override
