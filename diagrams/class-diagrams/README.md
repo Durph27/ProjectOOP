@@ -7,7 +7,7 @@ The original all-in-one class diagram was split by responsibility:
 3. `03-preprocessing-subsystem.asta`: preprocessing chain and processor strategies.
 4. `04-sentiment-subsystem.asta`: sentiment provider strategy, factory, and sentiment models.
 5. `05-analysis-subsystem.asta`: analyzer strategy, registry, implementations, and output models.
-6. `06-domain-and-storage.asta`: core domain objects, enums, and persistence abstraction.
+6. `06-domain-model.asta`: core domain objects and JSON-driven category definitions.
 
 Each file is an independent Astah project and can be presented separately.
 

@@ -1,7 +1,7 @@
 package com.humanitarian.collector;
 
+import com.humanitarian.config.AppConfig;
 import com.humanitarian.model.SocialMediaPost;
-import com.humanitarian.model.enums.Platform;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 
@@ -36,12 +36,12 @@ public class CsvFileCollector extends AbstractCollector {
     private String filePath;
 
     public CsvFileCollector() {
-        super(Platform.CSV_IMPORT);
+        super("csv");
         this.filePath = "data/sample/yagi_sample.csv";
     }
 
     public CsvFileCollector(String filePath) {
-        super(Platform.CSV_IMPORT);
+        super("csv");
         this.filePath = filePath;
     }
 
@@ -100,7 +100,7 @@ public class CsvFileCollector extends AbstractCollector {
 
         SocialMediaPost post = new SocialMediaPost();
         post.setId(getField(fields, 0, "csv_" + System.nanoTime()));
-        post.setPlatform(Platform.fromConfigKey(getField(fields, 1, "csv")));
+        post.setPlatform(AppConfig.getInstance().normalizePlatformId(getField(fields, 1, "csv")));
         post.setRawContent(getField(fields, 2, ""));
         post.setContent(post.getRawContent());
         post.setAuthor(getField(fields, 3, "unknown"));

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.humanitarian.model.CategoryDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +18,7 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -102,6 +103,27 @@ public class AppConfig {
         return getNestedString(appConfig, "sentiment", "provider", "dictionary");
     }
 
+    public String getPositiveSentimentId() {
+        return getNestedString(appConfig, "sentiment", "positiveId", "POSITIVE");
+    }
+
+    public String getNegativeSentimentId() {
+        return getNestedString(appConfig, "sentiment", "negativeId", "NEGATIVE");
+    }
+
+    public String getNeutralSentimentId() {
+        return getNestedString(appConfig, "sentiment", "neutralId", "NEUTRAL");
+    }
+
+    public String normalizeSentimentId(String id) {
+        return normalizeConfiguredId(getNestedArray(appConfig, "sentiment", "labels"), id,
+                getNeutralSentimentId());
+    }
+
+    public String getSentimentNameVi(String id) {
+        return getConfiguredDisplayName(getNestedArray(appConfig, "sentiment", "labels"), id);
+    }
+
     public String getPythonApiUrl() {
         return getNestedString(appConfig, "sentiment", "pythonApiUrl", "http://localhost:5000");
     }
@@ -135,6 +157,10 @@ public class AppConfig {
         return getCategoryKeywords(damageCategoriesConfig);
     }
 
+    public List<CategoryDefinition> getDamageCategories() {
+        return getCategories(damageCategoriesConfig);
+    }
+
     /**
      * Trả về map: categoryId -> nameVi cho hiển thị tên loại thiệt hại.
      */
@@ -150,8 +176,21 @@ public class AppConfig {
         return getCategoryKeywords(reliefCategoriesConfig);
     }
 
+    public List<CategoryDefinition> getReliefCategories() {
+        return getCategories(reliefCategoriesConfig);
+    }
+
     public Map<String, String> getReliefCategoryNames() {
         return getCategoryNames(reliefCategoriesConfig);
+    }
+
+    // ===== Platform Config =====
+    public String normalizePlatformId(String id) {
+        return normalizeConfiguredId(getNestedArray(appConfig, "collection", "platforms"), id, "other");
+    }
+
+    public String getPlatformDisplayName(String id) {
+        return getConfiguredDisplayName(getNestedArray(appConfig, "collection", "platforms"), id);
     }
 
     // ===== Preprocessing Config =====
@@ -219,35 +258,60 @@ public class AppConfig {
         return result;
     }
 
-    private Map<String, List<String>> getCategoryKeywords(JsonObject configObj) {
-        Map<String, List<String>> result = new HashMap<>();
-        if (configObj != null && configObj.has("categories")) {
-            JsonArray categories = configObj.getAsJsonArray("categories");
-            for (JsonElement el : categories) {
-                JsonObject cat = el.getAsJsonObject();
-                String id = cat.get("id").getAsString();
-                List<String> keywords = new ArrayList<>();
-                if (cat.has("keywords")) {
-                    for (JsonElement kw : cat.getAsJsonArray("keywords")) {
-                        keywords.add(kw.getAsString());
-                    }
+    private JsonArray getNestedArray(JsonObject obj, String parentKey, String arrayKey) {
+        if (obj != null && obj.has(parentKey)) {
+            JsonObject parent = obj.getAsJsonObject(parentKey);
+            if (parent != null && parent.has(arrayKey)) return parent.getAsJsonArray(arrayKey);
+        }
+        return new JsonArray();
+    }
+
+    private String normalizeConfiguredId(JsonArray definitions, String id, String defaultId) {
+        if (id != null) {
+            for (JsonElement element : definitions) {
+                String configuredId = element.getAsJsonObject().get("id").getAsString();
+                if (configuredId.equalsIgnoreCase(id)) return configuredId;
+            }
+        }
+        return defaultId;
+    }
+
+    private String getConfiguredDisplayName(JsonArray definitions, String id) {
+        if (id != null) {
+            for (JsonElement element : definitions) {
+                JsonObject definition = element.getAsJsonObject();
+                if (definition.get("id").getAsString().equalsIgnoreCase(id)) {
+                    if (definition.has("nameVi")) return definition.get("nameVi").getAsString();
+                    if (definition.has("displayName")) return definition.get("displayName").getAsString();
                 }
-                result.put(id, keywords);
+            }
+        }
+        return id != null ? id : "";
+    }
+
+    private List<CategoryDefinition> getCategories(JsonObject configObj) {
+        List<CategoryDefinition> result = new ArrayList<>();
+        if (configObj != null && configObj.has("categories")) {
+            for (JsonElement element : configObj.getAsJsonArray("categories")) {
+                CategoryDefinition category = gson.fromJson(element, CategoryDefinition.class);
+                if (category.getId() != null && !category.getId().isBlank()) result.add(category);
             }
         }
         return result;
     }
 
+    private Map<String, List<String>> getCategoryKeywords(JsonObject configObj) {
+        Map<String, List<String>> result = new LinkedHashMap<>();
+        for (CategoryDefinition category : getCategories(configObj)) {
+            result.put(category.getId(), category.getKeywords());
+        }
+        return result;
+    }
+
     private Map<String, String> getCategoryNames(JsonObject configObj) {
-        Map<String, String> result = new HashMap<>();
-        if (configObj != null && configObj.has("categories")) {
-            JsonArray categories = configObj.getAsJsonArray("categories");
-            for (JsonElement el : categories) {
-                JsonObject cat = el.getAsJsonObject();
-                String id = cat.get("id").getAsString();
-                String name = cat.has("nameVi") ? cat.get("nameVi").getAsString() : id;
-                result.put(id, name);
-            }
+        Map<String, String> result = new LinkedHashMap<>();
+        for (CategoryDefinition category : getCategories(configObj)) {
+            result.put(category.getId(), category.getNameVi());
         }
         return result;
     }

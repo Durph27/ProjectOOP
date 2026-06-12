@@ -1,13 +1,11 @@
 package com.humanitarian.model;
 
-import com.humanitarian.model.enums.ReliefCategory;
-
 /**
  * Kết quả phân tích mức hài lòng theo loại hàng cứu trợ (Bài toán 3).
  */
 public class
 ReliefSentiment {
-    private ReliefCategory category;
+    private CategoryDefinition category;
     private int positiveCount;
     private int negativeCount;
     private int neutralCount;
@@ -15,7 +13,7 @@ ReliefSentiment {
 
     public ReliefSentiment() {}
 
-    public ReliefSentiment(ReliefCategory category) {
+    public ReliefSentiment(CategoryDefinition category) {
         this.category = category;
         this.positiveCount = 0;
         this.negativeCount = 0;
@@ -34,8 +32,8 @@ ReliefSentiment {
     public int getTotalCount() { return positiveCount + negativeCount + neutralCount; }
 
     // Getters and Setters
-    public ReliefCategory getCategory() { return category; }
-    public void setCategory(ReliefCategory category) { this.category = category; }
+    public CategoryDefinition getCategory() { return category; }
+    public void setCategory(CategoryDefinition category) { this.category = category; }
 
     public int getPositiveCount() { return positiveCount; }
     public void setPositiveCount(int positiveCount) { this.positiveCount = positiveCount; recalculate(); }

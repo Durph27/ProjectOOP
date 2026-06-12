@@ -1,8 +1,8 @@
 package com.humanitarian.analyzer;
 
+import com.humanitarian.config.AppConfig;
 import com.humanitarian.model.SocialMediaPost;
 import com.humanitarian.model.TimeSentimentData;
-import com.humanitarian.model.enums.Sentiment;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -33,6 +33,7 @@ public class SentimentTimelineAnalyzer implements Analyzer<Map<LocalDate, TimeSe
     @Override
     public Map<LocalDate, TimeSentimentData> analyze(List<SocialMediaPost> posts) {
         Map<LocalDate, TimeSentimentData> timeline = new TreeMap<>();
+        AppConfig config = AppConfig.getInstance();
 
         for (SocialMediaPost post : posts) {
             if (post.getDate() == null || post.getSentiment() == null) continue;
@@ -40,11 +41,9 @@ public class SentimentTimelineAnalyzer implements Analyzer<Map<LocalDate, TimeSe
             LocalDate date = post.getDate();
             TimeSentimentData data = timeline.computeIfAbsent(date, k -> new TimeSentimentData());
 
-            switch (post.getSentiment()) {
-                case POSITIVE -> data.incrementPositive();
-                case NEGATIVE -> data.incrementNegative();
-                case NEUTRAL -> data.incrementNeutral();
-            }
+            if (config.getPositiveSentimentId().equals(post.getSentiment())) data.incrementPositive();
+            else if (config.getNegativeSentimentId().equals(post.getSentiment())) data.incrementNegative();
+            else data.incrementNeutral();
         }
 
         return timeline;

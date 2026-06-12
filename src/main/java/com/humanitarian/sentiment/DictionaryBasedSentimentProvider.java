@@ -1,7 +1,7 @@
 package com.humanitarian.sentiment;
 
+import com.humanitarian.config.AppConfig;
 import com.humanitarian.model.SentimentResult;
-import com.humanitarian.model.enums.Sentiment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -92,8 +92,9 @@ public class DictionaryBasedSentimentProvider implements SentimentModelProvider 
 
     @Override
     public SentimentResult analyze(String text) {
+        AppConfig config = AppConfig.getInstance();
         if (text == null || text.trim().isEmpty()) {
-            return new SentimentResult(Sentiment.NEUTRAL, 0.5, getModelName());
+            return new SentimentResult(config.getNeutralSentimentId(), 0.5, getModelName());
         }
 
         String lowerText = text.toLowerCase();
@@ -161,20 +162,20 @@ public class DictionaryBasedSentimentProvider implements SentimentModelProvider 
         // Xác định sentiment
         double totalScore = positiveScore + negativeScore;
         if (totalScore == 0) {
-            return new SentimentResult(Sentiment.NEUTRAL, 0.5, getModelName());
+            return new SentimentResult(config.getNeutralSentimentId(), 0.5, getModelName());
         }
 
         double confidence;
-        Sentiment sentiment;
+        String sentiment;
 
         if (positiveScore > negativeScore) {
-            sentiment = Sentiment.POSITIVE;
+            sentiment = config.getPositiveSentimentId();
             confidence = Math.min(0.95, 0.5 + (positiveScore - negativeScore) / (totalScore * 2));
         } else if (negativeScore > positiveScore) {
-            sentiment = Sentiment.NEGATIVE;
+            sentiment = config.getNegativeSentimentId();
             confidence = Math.min(0.95, 0.5 + (negativeScore - positiveScore) / (totalScore * 2));
         } else {
-            sentiment = Sentiment.NEUTRAL;
+            sentiment = config.getNeutralSentimentId();
             confidence = 0.5;
         }
 

@@ -1,22 +1,20 @@
 package com.humanitarian.analyzer;
 
 import com.humanitarian.config.AppConfig;
+import com.humanitarian.model.CategoryDefinition;
 import com.humanitarian.model.DamageReport;
 import com.humanitarian.model.SocialMediaPost;
-import com.humanitarian.model.enums.DamageCategory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * BÀI TOÁN 2: Xác định mức độ và loại thiệt hại phổ biến nhất.
- * 
- * Phân loại bài đăng thành các danh mục thiệt hại dựa trên từ khóa
- * được cấu hình trong damage-categories.json.
- * 
- * ĐẦU VÀO: List<SocialMediaPost> đã có sentiment
- * ĐẦU RA: Map<DamageCategory, List<DamageReport>> - báo cáo thiệt hại theo loại
+ * Classifies damage reports using categories loaded from damage-categories.json.
  */
-public class DamageClassificationAnalyzer implements Analyzer<Map<DamageCategory, List<DamageReport>>> {
+public class DamageClassificationAnalyzer
+        implements Analyzer<Map<CategoryDefinition, List<DamageReport>>> {
 
     @Override
     public String getId() { return "damage_classification"; }
@@ -26,67 +24,52 @@ public class DamageClassificationAnalyzer implements Analyzer<Map<DamageCategory
 
     @Override
     public String getDescription() {
-        return "Phân loại bài đăng thành các danh mục thiệt hại: Người bị ảnh hưởng, " +
-               "Gián đoạn kinh tế, Nhà cửa hư hỏng, Tài sản mất, Cơ sở hạ tầng hư hỏng, Khác. " +
-               "Giúp xác định loại thiệt hại được quan tâm nhiều nhất.";
+        return "Phân loại bài đăng theo các danh mục thiệt hại được cấu hình trong JSON.";
     }
 
     @Override
-    public Map<DamageCategory, List<DamageReport>> analyze(List<SocialMediaPost> posts) {
-        Map<DamageCategory, List<DamageReport>> results = new LinkedHashMap<>();
+    public Map<CategoryDefinition, List<DamageReport>> analyze(List<SocialMediaPost> posts) {
+        List<CategoryDefinition> categories = AppConfig.getInstance().getDamageCategories();
+        Map<CategoryDefinition, List<DamageReport>> results = new LinkedHashMap<>();
+        categories.forEach(category -> results.put(category, new ArrayList<>()));
 
-        // Khởi tạo map cho tất cả categories
-        for (DamageCategory cat : DamageCategory.values()) {
-            results.put(cat, new ArrayList<>());
-        }
-
-        // Lấy từ khóa từ config
-        Map<String, List<String>> categoryKeywords = AppConfig.getInstance().getDamageCategoryKeywords();
+        CategoryDefinition other = categories.stream()
+                .filter(category -> "OTHER".equalsIgnoreCase(category.getId()))
+                .findFirst()
+                .orElse(null);
 
         for (SocialMediaPost post : posts) {
             String content = post.getContent() != null ? post.getContent().toLowerCase() : "";
             if (content.isEmpty()) continue;
 
-            // Phân loại bài đăng vào các danh mục dựa trên từ khóa
             boolean classified = false;
-            for (Map.Entry<String, List<String>> entry : categoryKeywords.entrySet()) {
-                String categoryId = entry.getKey();
-                List<String> keywords = entry.getValue();
-
+            for (CategoryDefinition category : categories) {
                 int matchCount = 0;
                 String matchedExcerpt = "";
 
-                for (String keyword : keywords) {
-                    if (content.contains(keyword.toLowerCase())) {
+                for (String keyword : category.getKeywords()) {
+                    String normalizedKeyword = keyword.toLowerCase();
+                    if (content.contains(normalizedKeyword)) {
                         matchCount++;
-                        // Trích xuất đoạn văn chứa từ khóa
-                        int idx = content.indexOf(keyword.toLowerCase());
-                        int start = Math.max(0, idx - 30);
-                        int end = Math.min(content.length(), idx + keyword.length() + 30);
+                        int index = content.indexOf(normalizedKeyword);
+                        int start = Math.max(0, index - 30);
+                        int end = Math.min(content.length(), index + normalizedKeyword.length() + 30);
                         matchedExcerpt = "..." + content.substring(start, end) + "...";
                     }
                 }
 
                 if (matchCount > 0) {
-                    DamageCategory category = DamageCategory.fromId(categoryId);
                     double confidence = Math.min(0.95, 0.3 + matchCount * 0.15);
-
-                    DamageReport report = new DamageReport(
-                            post.getId(), category, post.getSentiment(),
-                            confidence, matchedExcerpt
-                    );
-                    results.get(category).add(report);
+                    results.get(category).add(new DamageReport(
+                            post.getId(), category, post.getSentiment(), confidence, matchedExcerpt));
                     classified = true;
                 }
             }
 
-            // Nếu không khớp category nào → OTHER
-            if (!classified && post.getSentiment() != null) {
-                DamageReport report = new DamageReport(
-                        post.getId(), DamageCategory.OTHER, post.getSentiment(),
-                        0.3, content.length() > 60 ? content.substring(0, 60) + "..." : content
-                );
-                results.get(DamageCategory.OTHER).add(report);
+            if (!classified && post.getSentiment() != null && other != null) {
+                String excerpt = content.length() > 60 ? content.substring(0, 60) + "..." : content;
+                results.get(other).add(new DamageReport(
+                        post.getId(), other, post.getSentiment(), 0.3, excerpt));
             }
         }
 

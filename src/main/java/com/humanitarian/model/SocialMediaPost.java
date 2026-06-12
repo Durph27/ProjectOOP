@@ -1,8 +1,5 @@
 package com.humanitarian.model;
 
-import com.humanitarian.model.enums.Platform;
-import com.humanitarian.model.enums.Sentiment;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -12,7 +9,7 @@ import java.time.format.DateTimeFormatter;
  */
 public class SocialMediaPost {
     private String id;
-    private Platform platform;
+    private String platform;
     private String rawContent;       // Nội dung gốc trước tiền xử lý
     private String content;          // Nội dung sau tiền xử lý
     private String author;
@@ -24,12 +21,12 @@ public class SocialMediaPost {
     private String location;         // Vị trí (nếu có)
 
     // Kết quả phân tích (được gán sau khi phân tích)
-    private Sentiment sentiment;
+    private String sentiment;
     private double sentimentConfidence;
 
     public SocialMediaPost() {}
 
-    public SocialMediaPost(String id, Platform platform, String content,
+    public SocialMediaPost(String id, String platform, String content,
                            String author, LocalDateTime timestamp) {
         this.id = id;
         this.platform = platform;
@@ -43,8 +40,8 @@ public class SocialMediaPost {
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 
-    public Platform getPlatform() { return platform; }
-    public void setPlatform(Platform platform) { this.platform = platform; }
+    public String getPlatform() { return platform; }
+    public void setPlatform(String platform) { this.platform = platform; }
 
     public String getRawContent() { return rawContent; }
     public void setRawContent(String rawContent) { this.rawContent = rawContent; }
@@ -73,8 +70,8 @@ public class SocialMediaPost {
     public String getLocation() { return location; }
     public void setLocation(String location) { this.location = location; }
 
-    public Sentiment getSentiment() { return sentiment; }
-    public void setSentiment(Sentiment sentiment) { this.sentiment = sentiment; }
+    public String getSentiment() { return sentiment; }
+    public void setSentiment(String sentiment) { this.sentiment = sentiment; }
 
     public double getSentimentConfidence() { return sentimentConfidence; }
     public void setSentimentConfidence(double sentimentConfidence) {

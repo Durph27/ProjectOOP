@@ -32,7 +32,7 @@ public class GenerateSplitClassDiagrams {
         preprocessing();
         sentiment();
         analysis();
-        domainStorage();
+        domainModel();
         System.out.println("Created six logical class diagrams in " + OUT);
     }
 
@@ -66,13 +66,13 @@ public class GenerateSplitClassDiagrams {
                 t("CollectionService", "class", "collectorFactory: DataCollectorFactory; config: AppConfig", "collectFrom(platform): List<SocialMediaPost>; collectFromAll(): List<SocialMediaPost>", 40, 40),
                 t("DataCollectorFactory", "class", "instance: DataCollectorFactory; collectors: Map<String, DataCollector>", "register(key, collector): void; get(key): DataCollector; getAvailable(): Collection<DataCollector>", 420, 40),
                 t("DataCollector", "interface", "", "collect(keywords, start, end): List<SocialMediaPost>; isAvailable(): boolean; getPlatformName(): String", 800, 40),
-                t("AbstractCollector", "abstract", "platform: Platform", "collect(keywords, start, end): List<SocialMediaPost>; doCollect(...): List<SocialMediaPost>", 800, 300),
+                t("AbstractCollector", "abstract", "platform: String", "collect(keywords, start, end): List<SocialMediaPost>; doCollect(...): List<SocialMediaPost>", 800, 300),
                 t("CsvFileCollector", "class", "csvPath: Path", "doCollect(...): List<SocialMediaPost>", 40, 600),
                 t("FacebookCollector", "class", "", "isAvailable(): boolean; doCollect(...): List<SocialMediaPost>", 300, 600),
                 t("TwitterCollector", "class", "apiKey: String; apiSecret: String", "isAvailable(): boolean; doCollect(...): List<SocialMediaPost>", 560, 600),
                 t("TiktokCollector", "class", "", "isAvailable(): boolean; doCollect(...): List<SocialMediaPost>", 820, 600),
                 t("YoutubeCollector", "class", "", "isAvailable(): boolean; doCollect(...): List<SocialMediaPost>", 1080, 600),
-                t("SocialMediaPost", "class", "id: String; platform: Platform; content: String; timestamp: LocalDateTime", "getDate(): LocalDate", 1180, 40),
+                t("SocialMediaPost", "class", "id: String; platform: String; content: String; timestamp: LocalDateTime", "getDate(): LocalDate", 1180, 40),
                 t("AppConfig", "class", "instance: AppConfig", "getKeywords(): List<String>; getDisasterStartDate(): LocalDate", 1180, 300)
         };
         Relation[] relations = {
@@ -115,16 +115,14 @@ public class GenerateSplitClassDiagrams {
                 t("DictionaryBasedSentimentProvider", "class", "positiveWords: Set<String>; negativeWords: Set<String>", "analyze(text): SentimentResult; isAvailable(): boolean", 400, 400),
                 t("PythonApiSentimentProvider", "class", "httpClient: OkHttpClient; baseUrl: String", "analyze(text): SentimentResult; analyzeBatch(texts): List<SentimentResult>; isAvailable(): boolean", 800, 400),
                 t("AppConfig", "class", "instance: AppConfig", "getSentimentProvider(): String; getPythonApiUrl(): String", 1180, 40),
-                t("SentimentResult", "class", "sentiment: Sentiment; confidence: double; modelName: String", "getSentiment(): Sentiment", 40, 650),
-                t("SocialMediaPost", "class", "content: String; sentiment: Sentiment; sentimentConfidence: double", "setSentiment(sentiment): void", 400, 650),
-                t("Sentiment", "enum", "", "", 800, 650)
+                t("SentimentResult", "class", "sentiment: String; confidence: double; modelName: String", "getSentiment(): String", 40, 650),
+                t("SocialMediaPost", "class", "content: String; sentiment: String; sentimentConfidence: double", "setSentiment(sentiment): void", 400, 650)
         };
         Relation[] relations = {
                 a("AnalysisService", "SentimentModelFactory", "sentimentFactory"), d("AnalysisService", "SocialMediaPost"),
                 ag("SentimentModelFactory", "SentimentModelProvider", "providers"), d("SentimentModelFactory", "AppConfig"),
                 r("DictionaryBasedSentimentProvider", "SentimentModelProvider"), r("PythonApiSentimentProvider", "SentimentModelProvider"),
-                d("PythonApiSentimentProvider", "AppConfig"), d("SentimentModelProvider", "SentimentResult"),
-                a("SentimentResult", "Sentiment", "sentiment"), a("SocialMediaPost", "Sentiment", "sentiment")
+                d("PythonApiSentimentProvider", "AppConfig"), d("SentimentModelProvider", "SentimentResult")
         };
         create("04-sentiment-subsystem.asta", "04 - Sentiment Subsystem", types, relations);
     }
@@ -139,10 +137,11 @@ public class GenerateSplitClassDiagrams {
                 t("ReliefSatisfactionAnalyzer", "class", "", "analyze(posts): SatisfactionResult", 650, 400),
                 t("ReliefSentimentTimelineAnalyzer", "class", "", "analyze(posts): ReliefTimelineResult", 970, 400),
                 t("AppConfig", "class", "instance: AppConfig", "getEnabledAnalyzers(): List<String>; getDamageCategoryKeywords(): Map", 1180, 40),
-                t("SocialMediaPost", "class", "content: String; sentiment: Sentiment", "getDate(): LocalDate", 40, 700),
+                t("SocialMediaPost", "class", "content: String; sentiment: String", "getDate(): LocalDate", 40, 700),
                 t("TimeSentimentData", "class", "positiveCount: int; negativeCount: int; neutralCount: int", "incrementPositive(): void; getTotal(): int", 330, 700),
-                t("DamageReport", "class", "category: DamageCategory; sentiment: Sentiment; confidence: double", "getCategory(): DamageCategory", 650, 700),
-                t("ReliefSentiment", "class", "category: ReliefCategory; satisfactionRate: double", "incrementPositive(): void; getTotalCount(): int", 970, 700)
+                t("DamageReport", "class", "category: CategoryDefinition; sentiment: String; confidence: double", "getCategory(): CategoryDefinition", 650, 700),
+                t("ReliefSentiment", "class", "category: CategoryDefinition; satisfactionRate: double", "incrementPositive(): void; getTotalCount(): int", 970, 700),
+                t("CategoryDefinition", "class", "id: String; nameVi: String; nameEn: String; keywords: List<String>", "getId(): String; getKeywords(): List<String>", 1180, 700)
         };
         Relation[] relations = {
                 a("AnalysisService", "AnalyzerRegistry", "registry"), ag("AnalyzerRegistry", "Analyzer", "analyzers"),
@@ -150,31 +149,26 @@ public class GenerateSplitClassDiagrams {
                 r("SentimentTimelineAnalyzer", "Analyzer"), r("DamageClassificationAnalyzer", "Analyzer"),
                 r("ReliefSatisfactionAnalyzer", "Analyzer"), r("ReliefSentimentTimelineAnalyzer", "Analyzer"),
                 d("SentimentTimelineAnalyzer", "TimeSentimentData"), d("DamageClassificationAnalyzer", "DamageReport"),
-                d("ReliefSatisfactionAnalyzer", "ReliefSentiment"), d("ReliefSentimentTimelineAnalyzer", "TimeSentimentData")
+                d("ReliefSatisfactionAnalyzer", "ReliefSentiment"), d("ReliefSentimentTimelineAnalyzer", "TimeSentimentData"),
+                a("DamageReport", "CategoryDefinition", "category"), a("ReliefSentiment", "CategoryDefinition", "category")
         };
         create("05-analysis-subsystem.asta", "05 - Analysis Subsystem", types, relations);
     }
 
-    private static void domainStorage() throws Exception {
+    private static void domainModel() throws Exception {
         Type[] types = {
-                t("SocialMediaPost", "class", "id: String; platform: Platform; rawContent: String; content: String; author: String; timestamp: LocalDateTime; sentiment: Sentiment; sentimentConfidence: double",
+                t("SocialMediaPost", "class", "id: String; platform: String; rawContent: String; content: String; author: String; timestamp: LocalDateTime; sentiment: String; sentimentConfidence: double",
                         "getDate(): LocalDate", 40, 40),
-                t("SentimentResult", "class", "sentiment: Sentiment; confidence: double; modelName: String", "getSentiment(): Sentiment", 400, 40),
-                t("DamageReport", "class", "postId: String; category: DamageCategory; sentiment: Sentiment; confidence: double; excerpt: String", "getCategory(): DamageCategory", 760, 40),
-                t("ReliefSentiment", "class", "category: ReliefCategory; positiveCount: int; negativeCount: int; neutralCount: int; satisfactionRate: double", "getTotalCount(): int", 1120, 40),
+                t("SentimentResult", "class", "sentiment: String; confidence: double; modelName: String", "getSentiment(): String", 400, 40),
+                t("DamageReport", "class", "postId: String; category: CategoryDefinition; sentiment: String; confidence: double; excerpt: String", "getCategory(): CategoryDefinition", 760, 40),
+                t("ReliefSentiment", "class", "category: CategoryDefinition; positiveCount: int; negativeCount: int; neutralCount: int; satisfactionRate: double", "getTotalCount(): int", 1120, 40),
                 t("TimeSentimentData", "class", "positiveCount: int; negativeCount: int; neutralCount: int", "getTotal(): int; getPositiveRate(): double", 40, 400),
-                t("Platform", "enum", "", "", 400, 400), t("Sentiment", "enum", "", "", 650, 400),
-                t("DamageCategory", "enum", "", "", 900, 400), t("ReliefCategory", "enum", "", "", 1150, 400),
-                t("DataStorage", "interface", "", "savePosts(posts, filename): void; loadPosts(filename): List<SocialMediaPost>; saveResults(json, filename): void; loadResults(filename): String", 400, 700),
-                t("JsonFileStorage", "class", "gson: Gson; baseDir: String", "savePosts(posts, filename): void; loadPosts(filename): List<SocialMediaPost>; exists(filename): boolean", 800, 700)
+                t("CategoryDefinition", "class", "id: String; nameVi: String; nameEn: String; keywords: List<String>", "getId(): String; getKeywords(): List<String>", 650, 400)
         };
         Relation[] relations = {
-                a("SocialMediaPost", "Platform", "platform"), a("SocialMediaPost", "Sentiment", "sentiment"),
-                a("SentimentResult", "Sentiment", "sentiment"), a("DamageReport", "DamageCategory", "category"),
-                a("DamageReport", "Sentiment", "sentiment"), a("ReliefSentiment", "ReliefCategory", "category"),
-                r("JsonFileStorage", "DataStorage"), d("DataStorage", "SocialMediaPost")
+                a("DamageReport", "CategoryDefinition", "category"), a("ReliefSentiment", "CategoryDefinition", "category")
         };
-        create("06-domain-and-storage.asta", "06 - Domain Model and Storage", types, relations);
+        create("06-domain-model.asta", "06 - Domain Model", types, relations);
     }
 
     private static void create(String filename, String diagramName, Type[] specs, Relation[] relations) throws Exception {
@@ -288,7 +282,7 @@ public class GenerateSplitClassDiagrams {
 
     private static String color(String name) {
         if (name.endsWith("Service")) return "#D5F5E3";
-        if (name.equals("AppConfig") || name.contains("Storage")) return "#E8DAEF";
+        if (name.equals("AppConfig")) return "#E8DAEF";
         if (name.equals("MainFrame") || name.equals("HumanitarianApplication")) return "#D6EAF8";
         if (name.equals("SocialMediaPost") || name.endsWith("Result") || name.endsWith("Report")
                 || name.endsWith("Data") || name.equals("ReliefSentiment") || name.equals("Platform")

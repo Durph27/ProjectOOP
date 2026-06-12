@@ -6,7 +6,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.humanitarian.config.AppConfig;
 import com.humanitarian.model.SentimentResult;
-import com.humanitarian.model.enums.Sentiment;
 import okhttp3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,7 +88,8 @@ public class PythonApiSentimentProvider implements SentimentModelProvider {
         }
 
         // Fallback: trả về NEUTRAL nếu API không khả dụng
-        return new SentimentResult(Sentiment.NEUTRAL, 0.0, getModelName() + " (fallback)");
+        return new SentimentResult(
+                AppConfig.getInstance().getNeutralSentimentId(), 0.0, getModelName() + " (fallback)");
     }
 
     @Override
@@ -142,7 +142,7 @@ public class PythonApiSentimentProvider implements SentimentModelProvider {
     private SentimentResult parseResult(JsonObject json) {
         String sentimentStr = json.get("sentiment").getAsString();
         double confidence = json.get("confidence").getAsDouble();
-        Sentiment sentiment = Sentiment.valueOf(sentimentStr.toUpperCase());
+        String sentiment = AppConfig.getInstance().normalizeSentimentId(sentimentStr);
         return new SentimentResult(sentiment, confidence, getModelName());
     }
 }

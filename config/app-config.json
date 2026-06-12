@@ -11,12 +11,28 @@
     "provider": "python-api",
     "pythonApiUrl": "http://localhost:5000",
     "batchSize": 50,
-    "timeout": 30000
+    "timeout": 30000,
+    "positiveId": "POSITIVE",
+    "negativeId": "NEGATIVE",
+    "neutralId": "NEUTRAL",
+    "labels": [
+      { "id": "POSITIVE", "nameVi": "Tích cực", "nameEn": "Positive" },
+      { "id": "NEGATIVE", "nameVi": "Tiêu cực", "nameEn": "Negative" },
+      { "id": "NEUTRAL", "nameVi": "Trung lập", "nameEn": "Neutral" }
+    ]
   },
   "collection": {
     "defaultPlatform": "csv",
     "maxPostsPerCollection": 10000,
-    "rateLimitMs": 1000
+    "rateLimitMs": 1000,
+    "platforms": [
+      { "id": "twitter", "displayName": "Twitter/X" },
+      { "id": "facebook", "displayName": "Facebook" },
+      { "id": "tiktok", "displayName": "TikTok" },
+      { "id": "youtube", "displayName": "YouTube" },
+      { "id": "csv", "displayName": "CSV Import" },
+      { "id": "other", "displayName": "Khác" }
+    ]
   },
   "preprocessing": {
     "enabledSteps": [

@@ -1,7 +1,7 @@
 package com.humanitarian.collector;
 
+import com.humanitarian.config.AppConfig;
 import com.humanitarian.model.SocialMediaPost;
-import com.humanitarian.model.enums.Platform;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,15 +14,15 @@ import java.util.List;
  */
 public abstract class AbstractCollector implements DataCollector {
     protected final Logger logger = LoggerFactory.getLogger(getClass());
-    protected final Platform platform;
+    protected final String platform;
 
-    protected AbstractCollector(Platform platform) {
+    protected AbstractCollector(String platform) {
         this.platform = platform;
     }
 
     @Override
     public String getPlatformName() {
-        return platform.getDisplayName();
+        return AppConfig.getInstance().getPlatformDisplayName(platform);
     }
 
     @Override

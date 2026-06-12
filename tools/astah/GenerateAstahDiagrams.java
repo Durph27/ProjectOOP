@@ -31,12 +31,13 @@ public class GenerateAstahDiagrams {
 
     public static void main(String[] args) throws Exception {
         Files.createDirectories(Path.of(OUT_DIR));
-        createPackageDiagram();
-        System.out.println("Created diagrams/package-diagram.asta");
+        String outputName = args.length > 0 ? args[0] : "package-diagram.asta";
+        createPackageDiagram(outputName);
+        System.out.println("Created diagrams/" + outputName);
     }
 
-    private static void createPackageDiagram() throws Exception {
-        String path = OUT_DIR + "/package-diagram.asta";
+    private static void createPackageDiagram(String outputName) throws Exception {
+        String path = OUT_DIR + "/" + outputName;
         Files.deleteIfExists(Path.of(path));
         ProjectAccessor accessor = AstahAPI.getAstahAPI().getProjectAccessor();
         accessor.create(path);
@@ -49,18 +50,16 @@ public class GenerateAstahDiagrams {
 
             Map<String, IPackage> packages = new LinkedHashMap<>();
             String[] names = {"ui", "service", "collector", "preprocessor", "sentiment",
-                    "analyzer", "storage", "config", "model", "model.enums"};
+                    "analyzer", "config", "model"};
             for (String name : names) {
-                IPackage parent = "model.enums".equals(name) ? packages.get("model") : project;
-                String packageName = "model.enums".equals(name) ? "enums" : "com.humanitarian." + name;
-                IPackage pkg = modelEditor.createPackage(parent, packageName);
+                IPackage pkg = modelEditor.createPackage(project, "com.humanitarian." + name);
                 pkg.setDefinition(packageDefinition(name));
                 packages.put(name, pkg);
             }
 
             double[][] positions = {
                     {650, 30}, {650, 220}, {50, 430}, {300, 430}, {550, 430},
-                    {800, 430}, {1050, 430}, {300, 650}, {650, 650}, {900, 650}
+                    {800, 430}, {1050, 430}, {650, 650}
             };
             Map<String, INodePresentation> nodes = new LinkedHashMap<>();
             for (int i = 0; i < names.length; i++) {
@@ -80,14 +79,12 @@ public class GenerateAstahDiagrams {
             dependency(diagram, packages, nodes, "service", "config");
             dependency(diagram, packages, nodes, "service", "model");
             dependency(diagram, packages, nodes, "collector", "model");
-            dependency(diagram, packages, nodes, "collector", "model.enums");
+            dependency(diagram, packages, nodes, "collector", "config");
             dependency(diagram, packages, nodes, "sentiment", "config");
             dependency(diagram, packages, nodes, "sentiment", "model");
             dependency(diagram, packages, nodes, "analyzer", "config");
             dependency(diagram, packages, nodes, "analyzer", "model");
-            dependency(diagram, packages, nodes, "analyzer", "model.enums");
-            dependency(diagram, packages, nodes, "storage", "model");
-            diagram.createContainmentLinkPresentation(nodes.get("model"), nodes.get("model.enums"));
+            dependency(diagram, packages, nodes, "config", "model");
 
             TransactionManager.endTransaction();
             accessor.save();
@@ -124,7 +121,7 @@ public class GenerateAstahDiagrams {
 
             iface(c, pkgs, "collector", "DataCollector",
                     "collect(keywords, startDate, endDate): List<SocialMediaPost>; isAvailable(): boolean; getPlatformName(): String");
-            abs(c, pkgs, "collector", "AbstractCollector", "platform: Platform",
+            abs(c, pkgs, "collector", "AbstractCollector", "platform: String",
                     "collect(keywords, startDate, endDate): List<SocialMediaPost>; doCollect(...): List<SocialMediaPost>");
             cls(c, pkgs, "collector", "CsvFileCollector", "csvPath: Path", "doCollect(...): List<SocialMediaPost>");
             for (String name : new String[]{"FacebookCollector", "TwitterCollector", "TiktokCollector", "YoutubeCollector"}) {
@@ -166,24 +163,17 @@ public class GenerateAstahDiagrams {
             cls(c, pkgs, "service", "AnalysisService", "registry: AnalyzerRegistry; sentimentFactory: SentimentModelFactory",
                     "assignSentiment(posts): void; runAnalyzer(id, posts): T; runAllAnalyzers(posts): Map<String, Object>");
 
-            iface(c, pkgs, "storage", "DataStorage",
-                    "savePosts(posts, filename): void; loadPosts(filename): List<SocialMediaPost>; saveResults(json, filename): void; loadResults(filename): String");
-            cls(c, pkgs, "storage", "JsonFileStorage", "gson: Gson; baseDir: String",
-                    "savePosts(posts, filename): void; loadPosts(filename): List<SocialMediaPost>; exists(filename): boolean");
-
             cls(c, pkgs, "ui", "MainFrame", "collectionService: CollectionService; preprocessingService: PreprocessingService; analysisService: AnalysisService; config: AppConfig",
                     "createDashboardPanel(): Node; runAnalysis(analyzerId, chartContainer, insightArea): void");
 
             cls(c, pkgs, "model", "SocialMediaPost",
-                    "id: String; platform: Platform; rawContent: String; content: String; author: String; timestamp: LocalDateTime; sentiment: Sentiment; sentimentConfidence: double",
+                    "id: String; platform: String; rawContent: String; content: String; author: String; timestamp: LocalDateTime; sentiment: String; sentimentConfidence: double",
                     "getDate(): LocalDate; getContent(): String; setSentiment(sentiment): void");
-            cls(c, pkgs, "model", "SentimentResult", "sentiment: Sentiment; confidence: double; modelName: String", "getSentiment(): Sentiment");
-            cls(c, pkgs, "model", "DamageReport", "postId: String; category: DamageCategory; sentiment: Sentiment; confidence: double; excerpt: String", "getCategory(): DamageCategory");
-            cls(c, pkgs, "model", "ReliefSentiment", "category: ReliefCategory; positiveCount: int; negativeCount: int; neutralCount: int; satisfactionRate: double", "incrementPositive(): void; getTotalCount(): int");
+            cls(c, pkgs, "model", "CategoryDefinition", "id: String; nameVi: String; nameEn: String; keywords: List<String>", "getId(): String; getKeywords(): List<String>");
+            cls(c, pkgs, "model", "SentimentResult", "sentiment: String; confidence: double; modelName: String", "getSentiment(): String");
+            cls(c, pkgs, "model", "DamageReport", "postId: String; category: CategoryDefinition; sentiment: String; confidence: double; excerpt: String", "getCategory(): CategoryDefinition");
+            cls(c, pkgs, "model", "ReliefSentiment", "category: CategoryDefinition; positiveCount: int; negativeCount: int; neutralCount: int; satisfactionRate: double", "incrementPositive(): void; getTotalCount(): int");
             cls(c, pkgs, "model", "TimeSentimentData", "positiveCount: int; negativeCount: int; neutralCount: int", "incrementPositive(): void; getTotal(): int");
-            for (String name : new String[]{"Platform", "Sentiment", "DamageCategory", "ReliefCategory"}) {
-                enumeration(c, pkgs, "enums", name);
-            }
 
             relations(modelEditor, c);
             presentations(diagram, c);
@@ -200,7 +190,7 @@ public class GenerateAstahDiagrams {
 
     private static Map<String, IPackage> createClassPackages(IModel project) throws Exception {
         Map<String, IPackage> result = new LinkedHashMap<>();
-        for (String name : new String[]{"app", "ui", "service", "collector", "preprocessor", "sentiment", "analyzer", "storage", "config", "model", "enums"}) {
+        for (String name : new String[]{"app", "ui", "service", "collector", "preprocessor", "sentiment", "analyzer", "config", "model"}) {
             result.put(name, modelEditor.createPackage(project, "com.humanitarian." + name));
         }
         return result;
@@ -264,8 +254,6 @@ public class GenerateAstahDiagrams {
         for (String name : new String[]{"SentimentTimelineAnalyzer", "DamageClassificationAnalyzer", "ReliefSatisfactionAnalyzer", "ReliefSentimentTimelineAnalyzer"}) {
             realize(e, c, name, "Analyzer");
         }
-        realize(e, c, "JsonFileStorage", "DataStorage");
-
         assoc(e, c, "MainFrame", "CollectionService", "uses");
         assoc(e, c, "MainFrame", "PreprocessingService", "uses");
         assoc(e, c, "MainFrame", "AnalysisService", "uses");
@@ -277,12 +265,8 @@ public class GenerateAstahDiagrams {
         assoc(e, c, "AnalyzerRegistry", "Analyzer", "registered");
         assoc(e, c, "SentimentModelFactory", "SentimentModelProvider", "providers");
         assoc(e, c, "DataCollectorFactory", "DataCollector", "collectors");
-        assoc(e, c, "SocialMediaPost", "Platform", "platform");
-        assoc(e, c, "SocialMediaPost", "Sentiment", "sentiment");
-        assoc(e, c, "SentimentResult", "Sentiment", "sentiment");
-        assoc(e, c, "DamageReport", "DamageCategory", "category");
-        assoc(e, c, "DamageReport", "Sentiment", "sentiment");
-        assoc(e, c, "ReliefSentiment", "ReliefCategory", "category");
+        assoc(e, c, "DamageReport", "CategoryDefinition", "category");
+        assoc(e, c, "ReliefSentiment", "CategoryDefinition", "category");
 
         dep(e, c, "CollectionService", "AppConfig");
         dep(e, c, "PythonApiSentimentProvider", "AppConfig");
@@ -293,7 +277,6 @@ public class GenerateAstahDiagrams {
         dep(e, c, "ReliefSentimentTimelineAnalyzer", "AppConfig");
         dep(e, c, "DataCollector", "SocialMediaPost");
         dep(e, c, "Analyzer", "SocialMediaPost");
-        dep(e, c, "DataStorage", "SocialMediaPost");
     }
 
     private static void presentations(ClassDiagramEditor diagram, Map<String, IClass> c) throws Exception {
@@ -357,10 +340,9 @@ public class GenerateAstahDiagrams {
             case "preprocessor" -> "Configurable text preprocessing pipeline";
             case "sentiment" -> "Sentiment provider strategies and factory";
             case "analyzer" -> "Business analysis strategies and registry";
-            case "storage" -> "Persistence abstraction and JSON storage";
             case "config" -> "Singleton JSON configuration";
             case "model" -> "Domain entities and analysis results";
-            default -> "Domain enumerations";
+            default -> "Domain entities and analysis results";
         };
     }
 
@@ -368,8 +350,8 @@ public class GenerateAstahDiagrams {
         return switch (name) {
             case "ui" -> "#D6EAF8";
             case "service" -> "#D5F5E3";
-            case "model", "model.enums" -> "#FCF3CF";
-            case "config", "storage" -> "#E8DAEF";
+            case "model" -> "#FCF3CF";
+            case "config" -> "#E8DAEF";
             default -> "#FDEBD0";
         };
     }
@@ -378,7 +360,7 @@ public class GenerateAstahDiagrams {
         String namespace = type.getFullNamespace(".");
         if (namespace.contains("service")) return "#D5F5E3";
         if (namespace.contains("model")) return "#FCF3CF";
-        if (namespace.contains("config") || namespace.contains("storage")) return "#E8DAEF";
+        if (namespace.contains("config")) return "#E8DAEF";
         if (namespace.contains("ui")) return "#D6EAF8";
         return "#FDEBD0";
     }

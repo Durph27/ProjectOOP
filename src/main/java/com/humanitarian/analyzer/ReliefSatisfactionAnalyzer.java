@@ -1,25 +1,19 @@
 package com.humanitarian.analyzer;
 
 import com.humanitarian.config.AppConfig;
+import com.humanitarian.model.CategoryDefinition;
 import com.humanitarian.model.ReliefSentiment;
 import com.humanitarian.model.SocialMediaPost;
-import com.humanitarian.model.enums.ReliefCategory;
-import com.humanitarian.model.enums.Sentiment;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * BÀI TOÁN 3: Xác định mức độ hài lòng và không hài lòng theo loại hàng cứu trợ.
- * 
- * Phân tích tâm lý tích cực/tiêu cực liên quan đến các loại hàng cứu trợ:
- * nhà ở, giao thông, thực phẩm, y tế, tiền mặt.
- * 
- * Ý nghĩa: Hỗ trợ ưu tiên phân bổ nguồn lực vào lĩnh vực có nhu cầu cấp bách nhất.
- * 
- * ĐẦU VÀO: List<SocialMediaPost> đã có sentiment
- * ĐẦU RA: Map<ReliefCategory, ReliefSentiment> - mức hài lòng theo loại cứu trợ
+ * Calculates satisfaction per relief category loaded from relief-categories.json.
  */
-public class ReliefSatisfactionAnalyzer implements Analyzer<Map<ReliefCategory, ReliefSentiment>> {
+public class ReliefSatisfactionAnalyzer
+        implements Analyzer<Map<CategoryDefinition, ReliefSentiment>> {
 
     @Override
     public String getId() { return "relief_satisfaction"; }
@@ -29,46 +23,29 @@ public class ReliefSatisfactionAnalyzer implements Analyzer<Map<ReliefCategory, 
 
     @Override
     public String getDescription() {
-        return "Đánh giá tâm lý tích cực/tiêu cực liên quan đến từng loại hàng cứu trợ " +
-               "(nhà ở, giao thông, thực phẩm, y tế, tiền mặt). " +
-               "Giúp xác định lĩnh vực cần ưu tiên phân bổ nguồn lực.";
+        return "Đánh giá phản hồi theo các danh mục cứu trợ được cấu hình trong JSON.";
     }
 
     @Override
-    public Map<ReliefCategory, ReliefSentiment> analyze(List<SocialMediaPost> posts) {
-        Map<ReliefCategory, ReliefSentiment> results = new LinkedHashMap<>();
-
-        // Khởi tạo cho tất cả categories
-        for (ReliefCategory cat : ReliefCategory.values()) {
-            results.put(cat, new ReliefSentiment(cat));
-        }
-
-        // Lấy từ khóa từ config
-        Map<String, List<String>> categoryKeywords = AppConfig.getInstance().getReliefCategoryKeywords();
+    public Map<CategoryDefinition, ReliefSentiment> analyze(List<SocialMediaPost> posts) {
+        AppConfig config = AppConfig.getInstance();
+        List<CategoryDefinition> categories = config.getReliefCategories();
+        Map<CategoryDefinition, ReliefSentiment> results = new LinkedHashMap<>();
+        categories.forEach(category -> results.put(category, new ReliefSentiment(category)));
 
         for (SocialMediaPost post : posts) {
             String content = post.getContent() != null ? post.getContent().toLowerCase() : "";
             if (content.isEmpty() || post.getSentiment() == null) continue;
 
-            // Phân loại bài đăng vào các danh mục cứu trợ
-            for (Map.Entry<String, List<String>> entry : categoryKeywords.entrySet()) {
-                String categoryId = entry.getKey();
-                List<String> keywords = entry.getValue();
+            for (CategoryDefinition category : categories) {
+                boolean matches = category.getKeywords().stream()
+                        .anyMatch(keyword -> content.contains(keyword.toLowerCase()));
+                if (!matches) continue;
 
-                boolean matches = keywords.stream()
-                        .anyMatch(kw -> content.contains(kw.toLowerCase()));
-
-                if (matches) {
-                    ReliefCategory category = ReliefCategory.fromId(categoryId);
-                    if (category == null) continue;
-
-                    ReliefSentiment relief = results.get(category);
-                    switch (post.getSentiment()) {
-                        case POSITIVE -> relief.incrementPositive();
-                        case NEGATIVE -> relief.incrementNegative();
-                        case NEUTRAL -> relief.incrementNeutral();
-                    }
-                }
+                ReliefSentiment relief = results.get(category);
+                if (config.getPositiveSentimentId().equals(post.getSentiment())) relief.incrementPositive();
+                else if (config.getNegativeSentimentId().equals(post.getSentiment())) relief.incrementNegative();
+                else relief.incrementNeutral();
             }
         }
 

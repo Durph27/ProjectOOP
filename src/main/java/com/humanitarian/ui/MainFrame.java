@@ -2,7 +2,6 @@ package com.humanitarian.ui;
 
 import com.humanitarian.config.AppConfig;
 import com.humanitarian.model.*;
-import com.humanitarian.model.enums.*;
 import com.humanitarian.service.*;
 import com.humanitarian.collector.CsvFileCollector;
 import com.humanitarian.collector.DataCollectorFactory;
@@ -81,12 +80,12 @@ public class MainFrame extends BorderPane {
         tabPane.setStyle("-fx-font-size: 14px;");
 
         tabPane.getTabs().addAll(
-                createTab("📥 Thu thập", createCollectionPanel()),
-                createTab("⚙️ Tiền xử lý", createPreprocessingPanel()),
-                createTab("📈 BT1: Tâm lý theo thời gian", createProblem1Panel()),
-                createTab("🏚️ BT2: Phân loại thiệt hại", createProblem2Panel()),
-                createTab("😊 BT3: Hài lòng cứu trợ", createProblem3Panel()),
-                createTab("📉 BT4: Cứu trợ theo thời gian", createProblem4Panel())
+                createTab("Thu thập", createCollectionPanel()),
+                createTab("Tiền xử lý", createPreprocessingPanel()),
+                createTab("BT1: Tâm lý theo thời gian", createProblem1Panel()),
+                createTab("BT2: Phân loại thiệt hại", createProblem2Panel()),
+                createTab("BT3: Hài lòng cứu trợ", createProblem3Panel()),
+                createTab("BT4: Cứu trợ theo thời gian", createProblem4Panel())
         );
 
         // Header
@@ -373,20 +372,20 @@ public class MainFrame extends BorderPane {
                         insightArea.setText(generateTimelineInsight(data));
                     }
                     case "damage_classification" -> {
-                        Map<DamageCategory, List<DamageReport>> data =
-                                (Map<DamageCategory, List<DamageReport>>) result;
+                        Map<CategoryDefinition, List<DamageReport>> data =
+                                (Map<CategoryDefinition, List<DamageReport>>) result;
                         chartContainer.getChildren().add(createDamageChart(data));
                         insightArea.setText(generateDamageInsight(data));
                     }
                     case "relief_satisfaction" -> {
-                        Map<ReliefCategory, ReliefSentiment> data =
-                                (Map<ReliefCategory, ReliefSentiment>) result;
+                        Map<CategoryDefinition, ReliefSentiment> data =
+                                (Map<CategoryDefinition, ReliefSentiment>) result;
                         chartContainer.getChildren().add(createReliefSatisfactionChart(data));
                         insightArea.setText(generateReliefInsight(data));
                     }
                     case "relief_sentiment_timeline" -> {
-                        Map<ReliefCategory, Map<LocalDate, TimeSentimentData>> data =
-                                (Map<ReliefCategory, Map<LocalDate, TimeSentimentData>>) result;
+                        Map<CategoryDefinition, Map<LocalDate, TimeSentimentData>> data =
+                                (Map<CategoryDefinition, Map<LocalDate, TimeSentimentData>>) result;
                         chartContainer.getChildren().add(createReliefTimelineChart(data));
                         insightArea.setText(generateReliefTimelineInsight(data));
                     }
@@ -430,7 +429,7 @@ public class MainFrame extends BorderPane {
         return chart;
     }
 
-    private Node createDamageChart(Map<DamageCategory, List<DamageReport>> data) {
+    private Node createDamageChart(Map<CategoryDefinition, List<DamageReport>> data) {
         CategoryAxis xAxis = new CategoryAxis();
         xAxis.setLabel("Loại thiệt hại");
         NumberAxis yAxis = new NumberAxis();
@@ -456,7 +455,7 @@ public class MainFrame extends BorderPane {
         return chart;
     }
 
-    private Node createReliefSatisfactionChart(Map<ReliefCategory, ReliefSentiment> data) {
+    private Node createReliefSatisfactionChart(Map<CategoryDefinition, ReliefSentiment> data) {
         CategoryAxis xAxis = new CategoryAxis();
         xAxis.setLabel("Loại cứu trợ");
         NumberAxis yAxis = new NumberAxis();
@@ -472,7 +471,7 @@ public class MainFrame extends BorderPane {
         XYChart.Series<String, Number> neuSeries = new XYChart.Series<>();
         neuSeries.setName("Trung lập");
 
-        for (Map.Entry<ReliefCategory, ReliefSentiment> entry : data.entrySet()) {
+        for (Map.Entry<CategoryDefinition, ReliefSentiment> entry : data.entrySet()) {
             String name = entry.getKey().getNameVi();
             ReliefSentiment rs = entry.getValue();
             posSeries.getData().add(new XYChart.Data<>(name, rs.getPositiveCount()));
@@ -486,7 +485,7 @@ public class MainFrame extends BorderPane {
     }
 
     private Node createReliefTimelineChart(
-            Map<ReliefCategory, Map<LocalDate, TimeSentimentData>> data) {
+            Map<CategoryDefinition, Map<LocalDate, TimeSentimentData>> data) {
         CategoryAxis xAxis = new CategoryAxis();
         xAxis.setLabel("Ngày");
         NumberAxis yAxis = new NumberAxis();
@@ -498,7 +497,7 @@ public class MainFrame extends BorderPane {
 
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM");
 
-        for (Map.Entry<ReliefCategory, Map<LocalDate, TimeSentimentData>> entry : data.entrySet()) {
+        for (Map.Entry<CategoryDefinition, Map<LocalDate, TimeSentimentData>> entry : data.entrySet()) {
             XYChart.Series<String, Number> series = new XYChart.Series<>();
             series.setName(entry.getKey().getNameVi());
 
@@ -556,8 +555,8 @@ public class MainFrame extends BorderPane {
         return sb.toString();
     }
 
-    private String generateDamageInsight(Map<DamageCategory, List<DamageReport>> data) {
-        List<Map.Entry<DamageCategory, List<DamageReport>>> sorted = data.entrySet().stream()
+    private String generateDamageInsight(Map<CategoryDefinition, List<DamageReport>> data) {
+        List<Map.Entry<CategoryDefinition, List<DamageReport>>> sorted = data.entrySet().stream()
                 .filter(e -> !e.getValue().isEmpty())
                 .sorted((a, b) -> b.getValue().size() - a.getValue().size())
                 .toList();
@@ -569,13 +568,13 @@ public class MainFrame extends BorderPane {
                 .append(" lượt phân loại thuộc ").append(sorted.size()).append(" nhóm thiệt hại.\n\n");
         sb.append("Các nhóm được đề cập nhiều nhất:\n");
         int rank = 1;
-        for (Map.Entry<DamageCategory, List<DamageReport>> entry : sorted) {
+        for (Map.Entry<CategoryDefinition, List<DamageReport>> entry : sorted) {
             sb.append(rank++).append(". ").append(entry.getKey().getNameVi())
                     .append(": ").append(entry.getValue().size()).append(" lượt (")
                     .append(percent(entry.getValue().size(), total)).append(").\n");
         }
 
-        Map.Entry<DamageCategory, List<DamageReport>> leading = sorted.get(0);
+        Map.Entry<CategoryDefinition, List<DamageReport>> leading = sorted.get(0);
         sb.append("\nNhóm ").append(leading.getKey().getNameVi())
                 .append(" có tần suất đề cập cao nhất trong tập dữ liệu. ")
                 .append("Kết quả phản ánh mức độ xuất hiện trong bài đăng, không trực tiếp đại diện cho mức độ thiệt hại thực tế. ")
@@ -583,17 +582,17 @@ public class MainFrame extends BorderPane {
         return sb.toString();
     }
 
-    private String generateReliefInsight(Map<ReliefCategory, ReliefSentiment> data) {
-        List<Map.Entry<ReliefCategory, ReliefSentiment>> available = data.entrySet().stream()
+    private String generateReliefInsight(Map<CategoryDefinition, ReliefSentiment> data) {
+        List<Map.Entry<CategoryDefinition, ReliefSentiment>> available = data.entrySet().stream()
                 .filter(e -> e.getValue().getTotalCount() > 0)
-                .sorted(Comparator.comparingDouble((Map.Entry<ReliefCategory, ReliefSentiment> e) ->
+                .sorted(Comparator.comparingDouble((Map.Entry<CategoryDefinition, ReliefSentiment> e) ->
                         e.getValue().getSatisfactionRate()).reversed())
                 .toList();
         if (available.isEmpty()) return noDataInsight();
 
         StringBuilder sb = new StringBuilder("NHẬN XÉT TỔNG HỢP\n\n");
         sb.append("Có ").append(available.size()).append(" nhóm cứu trợ đủ dữ liệu để đánh giá.\n\n");
-        for (Map.Entry<ReliefCategory, ReliefSentiment> entry : available) {
+        for (Map.Entry<CategoryDefinition, ReliefSentiment> entry : available) {
             ReliefSentiment rs = entry.getValue();
             sb.append(entry.getKey().getNameVi()).append(": ")
                     .append(rs.getPositiveCount()).append(" tích cực, ")
@@ -602,8 +601,8 @@ public class MainFrame extends BorderPane {
                     .append(String.format("%.1f%%", rs.getSatisfactionRate() * 100)).append(".\n");
         }
 
-        Map.Entry<ReliefCategory, ReliefSentiment> highest = available.get(0);
-        Map.Entry<ReliefCategory, ReliefSentiment> lowest = available.get(available.size() - 1);
+        Map.Entry<CategoryDefinition, ReliefSentiment> highest = available.get(0);
+        Map.Entry<CategoryDefinition, ReliefSentiment> lowest = available.get(available.size() - 1);
         sb.append("\nTrong phạm vi dữ liệu hiện có, ").append(highest.getKey().getNameVi())
                 .append(" có tỷ lệ phản hồi tích cực cao nhất, trong khi ")
                 .append(lowest.getKey().getNameVi()).append(" có tỷ lệ thấp nhất. ")
@@ -612,15 +611,15 @@ public class MainFrame extends BorderPane {
     }
 
     private String generateReliefTimelineInsight(
-            Map<ReliefCategory, Map<LocalDate, TimeSentimentData>> data) {
-        List<Map.Entry<ReliefCategory, Map<LocalDate, TimeSentimentData>>> available = data.entrySet().stream()
+            Map<CategoryDefinition, Map<LocalDate, TimeSentimentData>> data) {
+        List<Map.Entry<CategoryDefinition, Map<LocalDate, TimeSentimentData>>> available = data.entrySet().stream()
                 .filter(e -> !e.getValue().isEmpty())
                 .toList();
         if (available.isEmpty()) return noDataInsight();
 
         StringBuilder sb = new StringBuilder("NHẬN XÉT TỔNG HỢP\n\n");
         sb.append("Xu hướng phản hồi theo từng nhóm cứu trợ:\n");
-        for (Map.Entry<ReliefCategory, Map<LocalDate, TimeSentimentData>> entry : available) {
+        for (Map.Entry<CategoryDefinition, Map<LocalDate, TimeSentimentData>> entry : available) {
             Map<LocalDate, TimeSentimentData> timeline = entry.getValue();
             int totalPos = timeline.values().stream().mapToInt(TimeSentimentData::getPositiveCount).sum();
             int totalNeg = timeline.values().stream().mapToInt(TimeSentimentData::getNegativeCount).sum();
@@ -691,7 +690,8 @@ public class MainFrame extends BorderPane {
 
         TableColumn<SocialMediaPost, String> platformCol = new TableColumn<>("Nền tảng");
         platformCol.setCellValueFactory(cd -> new javafx.beans.property.SimpleStringProperty(
-                cd.getValue().getPlatform() != null ? cd.getValue().getPlatform().getDisplayName() : ""));
+                cd.getValue().getPlatform() != null
+                        ? config.getPlatformDisplayName(cd.getValue().getPlatform()) : ""));
         platformCol.setPrefWidth(80);
 
         TableColumn<SocialMediaPost, String> contentCol = new TableColumn<>("Nội dung");
@@ -712,7 +712,8 @@ public class MainFrame extends BorderPane {
 
         TableColumn<SocialMediaPost, String> sentimentCol = new TableColumn<>("Sentiment");
         sentimentCol.setCellValueFactory(cd -> new javafx.beans.property.SimpleStringProperty(
-                cd.getValue().getSentiment() != null ? cd.getValue().getSentiment().getNameVi() : "—"));
+                cd.getValue().getSentiment() != null
+                        ? config.getSentimentNameVi(cd.getValue().getSentiment()) : "—"));
         sentimentCol.setPrefWidth(80);
 
         table.getColumns().addAll(idCol, platformCol, contentCol, dateCol, authorCol, sentimentCol);

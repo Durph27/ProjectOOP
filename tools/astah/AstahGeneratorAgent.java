@@ -5,8 +5,13 @@ public class AstahGeneratorAgent {
         Thread worker = new Thread(() -> {
             try {
                 Thread.sleep(8000);
-                GenerateAstahDiagrams.main(new String[0]);
-                GenerateSplitClassDiagrams.main(new String[0]);
+                if ("split-only".equals(args)) {
+                    GenerateSplitClassDiagrams.main(new String[0]);
+                    System.exit(0);
+                }
+                boolean customPackageOutput = args != null && !args.isBlank();
+                GenerateAstahDiagrams.main(customPackageOutput ? new String[]{args} : new String[0]);
+                if (!customPackageOutput) GenerateSplitClassDiagrams.main(new String[0]);
                 System.exit(0);
             } catch (Throwable e) {
                 e.printStackTrace();

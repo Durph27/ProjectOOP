@@ -1,7 +1,6 @@
 package com.humanitarian.collector;
 
 import com.humanitarian.model.SocialMediaPost;
-import com.humanitarian.model.enums.Platform;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,7 +16,7 @@ public class TwitterCollector extends AbstractCollector {
     private String apiSecret;
 
     public TwitterCollector() {
-        super(Platform.TWITTER);
+        super("twitter");
     }
 
     public void setApiKey(String apiKey) { this.apiKey = apiKey; }

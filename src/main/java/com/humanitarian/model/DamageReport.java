@@ -1,21 +1,18 @@
 package com.humanitarian.model;
 
-import com.humanitarian.model.enums.DamageCategory;
-import com.humanitarian.model.enums.Sentiment;
-
 /**
  * Kết quả phân loại thiệt hại cho một bài đăng (Bài toán 2).
  */
 public class DamageReport {
     private String postId;
-    private DamageCategory category;
-    private Sentiment sentiment;
+    private CategoryDefinition category;
+    private String sentiment;
     private double confidence;
     private String excerpt;          // Trích đoạn liên quan
 
     public DamageReport() {}
 
-    public DamageReport(String postId, DamageCategory category, Sentiment sentiment,
+    public DamageReport(String postId, CategoryDefinition category, String sentiment,
                         double confidence, String excerpt) {
         this.postId = postId;
         this.category = category;
@@ -27,11 +24,11 @@ public class DamageReport {
     public String getPostId() { return postId; }
     public void setPostId(String postId) { this.postId = postId; }
 
-    public DamageCategory getCategory() { return category; }
-    public void setCategory(DamageCategory category) { this.category = category; }
+    public CategoryDefinition getCategory() { return category; }
+    public void setCategory(CategoryDefinition category) { this.category = category; }
 
-    public Sentiment getSentiment() { return sentiment; }
-    public void setSentiment(Sentiment sentiment) { this.sentiment = sentiment; }
+    public String getSentiment() { return sentiment; }
+    public void setSentiment(String sentiment) { this.sentiment = sentiment; }
 
     public double getConfidence() { return confidence; }
     public void setConfidence(double confidence) { this.confidence = confidence; }

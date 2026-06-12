@@ -1,7 +1,6 @@
 package com.humanitarian.collector;
 
 import com.humanitarian.model.SocialMediaPost;
-import com.humanitarian.model.enums.Platform;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,7 +11,7 @@ import java.util.List;
 public class TiktokCollector extends AbstractCollector {
 
     public TiktokCollector() {
-        super(Platform.TIKTOK);
+        super("tiktok");
     }
 
     @Override

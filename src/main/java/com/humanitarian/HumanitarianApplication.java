@@ -22,7 +22,7 @@ public class HumanitarianApplication extends Application {
             scene.getStylesheets().add(cssResource.toExternalForm());
         }
 
-        primaryStage.setTitle("🌏 Phân Tích Mạng Xã Hội - Logistics Nhân Đạo");
+        primaryStage.setTitle("Phân Tích Mạng Xã Hội - Logistics Nhân Đạo");
         primaryStage.setScene(scene);
         primaryStage.setMinWidth(900);
         primaryStage.setMinHeight(600);
