@@ -11,9 +11,16 @@ API Endpoints:
 Input/Output Contract rõ ràng - có thể dễ dàng thay thế bằng API khác.
 """
 
+import logging
+import os
+from pathlib import Path
+
+# Keep downloaded Hugging Face models in a writable project-local cache.
+_cache_dir = Path(__file__).resolve().parent / ".cache" / "huggingface"
+os.environ.setdefault("HF_HOME", str(_cache_dir))
+
 from flask import Flask, request, jsonify
 from models.sentiment_model import SentimentModel
-import logging
 
 app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -112,4 +119,5 @@ def classify_relief():
 
 if __name__ == '__main__':
     logger.info(f"Starting sentiment API server with model: {model.get_model_name()}")
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    debug_enabled = os.getenv('FLASK_DEBUG', 'false').lower() == 'true'
+    app.run(host='0.0.0.0', port=5000, debug=debug_enabled)

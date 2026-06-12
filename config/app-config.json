@@ -8,7 +8,7 @@
     "region": "Miền Bắc Việt Nam"
   },
   "sentiment": {
-    "provider": "dictionary",
+    "provider": "python-api",
     "pythonApiUrl": "http://localhost:5000",
     "batchSize": 50,
     "timeout": 30000

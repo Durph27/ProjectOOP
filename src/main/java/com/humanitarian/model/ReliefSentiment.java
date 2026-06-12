@@ -5,7 +5,8 @@ import com.humanitarian.model.enums.ReliefCategory;
 /**
  * Kết quả phân tích mức hài lòng theo loại hàng cứu trợ (Bài toán 3).
  */
-public class ReliefSentiment {
+public class
+ReliefSentiment {
     private ReliefCategory category;
     private int positiveCount;
     private int negativeCount;

@@ -8,5 +8,7 @@
     ],
     "maven.executable.path": "C:/Program Files/JetBrains/IntelliJ IDEA 2025.3.4/plugins/maven/lib/maven3/bin/mvn.cmd",
     "java.compile.nullAnalysis.mode": "disabled",
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "python.defaultInterpreterPath": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+    "python.terminal.activateEnvironment": true
 }
