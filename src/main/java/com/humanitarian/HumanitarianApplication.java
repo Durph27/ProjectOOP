@@ -27,5 +27,6 @@ public class HumanitarianApplication extends Application {
         primaryStage.setMinWidth(900);
         primaryStage.setMinHeight(600);
         primaryStage.show();
+        primaryStage.centerOnScreen();
     }
 }

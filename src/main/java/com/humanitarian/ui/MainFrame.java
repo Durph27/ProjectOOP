@@ -30,7 +30,6 @@ import java.util.stream.Collectors;
 /**
  * Cửa sổ chính của ứng dụng JavaFX.
  * Sử dụng TabPane với các tab cho từng chức năng:
- * - Dashboard (Tổng quan)
  * - Thu thập dữ liệu
  * - Tiền xử lý
  * - Bài toán 1-4 (Phân tích)
@@ -82,7 +81,6 @@ public class MainFrame extends BorderPane {
         tabPane.setStyle("-fx-font-size: 14px;");
 
         tabPane.getTabs().addAll(
-                createTab("📊 Tổng quan", createDashboardPanel()),
                 createTab("📥 Thu thập", createCollectionPanel()),
                 createTab("⚙️ Tiền xử lý", createPreprocessingPanel()),
                 createTab("📈 BT1: Tâm lý theo thời gian", createProblem1Panel()),
@@ -122,69 +120,6 @@ public class MainFrame extends BorderPane {
     private Tab createTab(String title, Node content) {
         Tab tab = new Tab(title, content);
         return tab;
-    }
-
-    // ==================== DASHBOARD ====================
-    private Node createDashboardPanel() {
-        VBox panel = new VBox(15);
-        panel.setPadding(new Insets(20));
-
-        Label titleLabel = sectionTitle("Tổng Quan Hệ Thống");
-
-        // Info cards
-        GridPane cards = new GridPane();
-        cards.setHgap(15);
-        cards.setVgap(15);
-
-        cards.add(createInfoCard("📦 Dữ liệu", "Chưa tải", "#3498db"), 0, 0);
-        cards.add(createInfoCard("🔧 Tiền xử lý", "5 bước", "#2ecc71"), 1, 0);
-        cards.add(createInfoCard("🤖 Mô hình", config.getSentimentProvider(), "#e74c3c"), 2, 0);
-        cards.add(createInfoCard("📊 Bài toán", "4 bài toán", "#f39c12"), 3, 0);
-
-        // Architecture info
-        TextArea archInfo = new TextArea();
-        archInfo.setEditable(false);
-        archInfo.setPrefRowCount(12);
-        archInfo.setStyle("-fx-font-size: 13px;");
-        archInfo.setText("""
-                === KIẾN TRÚC ỨNG DỤNG ===
-                
-                📐 Design Patterns sử dụng:
-                  • Strategy Pattern: DataCollector, TextPreprocessor, SentimentModelProvider, Analyzer
-                  • Factory Pattern: DataCollectorFactory, SentimentModelFactory
-                  • Chain of Responsibility: PreprocessorChain
-                  • Registry Pattern: AnalyzerRegistry
-                  • Singleton: AppConfig
-                  • Adapter: PythonApiSentimentProvider
-                
-                🔌 Tính mở rộng:
-                  • Thêm nguồn dữ liệu: Implement DataCollector + đăng ký vào Factory
-                  • Thêm bước tiền xử lý: Implement TextPreprocessor + thêm vào Chain
-                  • Thêm bài toán: Implement Analyzer<T> + đăng ký vào Registry
-                  • Đổi mô hình sentiment: Thay đổi "sentiment.provider" trong config
-                  • Đổi Python → Java: Implement SentimentModelProvider bằng Java
-                
-                📁 Cấu hình linh hoạt:
-                  • config/app-config.json: Cấu hình chính
-                  • config/keywords.json: Từ khóa, hashtags
-                  • config/damage-categories.json: Danh mục thiệt hại + từ khóa
-                  • config/relief-categories.json: Danh mục cứu trợ + từ khóa
-                """);
-
-        panel.getChildren().addAll(titleLabel, cards, new Separator(), archInfo);
-        return new ScrollPane(panel);
-    }
-
-    private VBox createInfoCard(String title, String value, String color) {
-        Label titleL = new Label(title);
-        titleL.setStyle("-fx-font-size: 13px; -fx-text-fill: white;");
-        Label valueL = new Label(value);
-        valueL.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: white;");
-        VBox card = new VBox(5, titleL, valueL);
-        card.setPadding(new Insets(15));
-        card.setPrefWidth(200);
-        card.setStyle("-fx-background-color: " + color + "; -fx-background-radius: 10;");
-        return card;
     }
 
     // ==================== COLLECTION ====================
@@ -316,126 +251,96 @@ public class MainFrame extends BorderPane {
 
     // ==================== BÀI TOÁN 1 ====================
     private Node createProblem1Panel() {
-        VBox panel = new VBox(15);
-        panel.setPadding(new Insets(20));
-
-        Label titleLabel = sectionTitle("Bài toán 1: Theo dõi tâm lý công chúng theo thời gian");
-        Label descLabel = new Label("Phân tích số lượng post tích cực/tiêu cực theo từng ngày.");
-        descLabel.setWrapText(true);
-
-        StackPane chartContainer = new StackPane();
-        chartContainer.setPrefHeight(400);
-        chartContainer.setStyle("-fx-border-color: #ddd; -fx-border-radius: 5;");
-
-        TextArea insightArea = new TextArea();
-        insightArea.setPromptText("Nhận xét sẽ hiển thị ở đây...");
-        insightArea.setPrefRowCount(6);
-        insightArea.setEditable(false);
-
-        Button analyzeBtn = new Button("📈 Phân tích");
-        analyzeBtn.setStyle(btnStyle("#3498db"));
-        analyzeBtn.setPrefWidth(200);
-        analyzeBtn.setOnAction(e -> {
-            if (!ensureDataReady()) return;
-            runAnalysis("sentiment_timeline", chartContainer, insightArea);
-        });
-
-        panel.getChildren().addAll(titleLabel, descLabel, analyzeBtn,
-                new Separator(), chartContainer, insightArea);
-        return new ScrollPane(panel);
+        return createAnalysisPanel(
+                "Bài toán 1: Theo dõi tâm lý công chúng theo thời gian",
+                "Phân tích số lượng bài đăng tích cực, tiêu cực và trung lập theo từng ngày.",
+                "sentiment_timeline", "#3498db");
     }
 
     // ==================== BÀI TOÁN 2 ====================
     private Node createProblem2Panel() {
-        VBox panel = new VBox(15);
-        panel.setPadding(new Insets(20));
-
-        Label titleLabel = sectionTitle("Bài toán 2: Phân loại mức độ và loại thiệt hại");
-        Label descLabel = new Label("Phân loại bài đăng theo 6 danh mục thiệt hại chính.");
-        descLabel.setWrapText(true);
-
-        StackPane chartContainer = new StackPane();
-        chartContainer.setPrefHeight(400);
-        chartContainer.setStyle("-fx-border-color: #ddd; -fx-border-radius: 5;");
-
-        TextArea insightArea = new TextArea();
-        insightArea.setPromptText("Nhận xét sẽ hiển thị ở đây...");
-        insightArea.setPrefRowCount(6);
-        insightArea.setEditable(false);
-
-        Button analyzeBtn = new Button("🏚️ Phân tích");
-        analyzeBtn.setStyle(btnStyle("#e67e22"));
-        analyzeBtn.setPrefWidth(200);
-        analyzeBtn.setOnAction(e -> {
-            if (!ensureDataReady()) return;
-            runAnalysis("damage_classification", chartContainer, insightArea);
-        });
-
-        panel.getChildren().addAll(titleLabel, descLabel, analyzeBtn,
-                new Separator(), chartContainer, insightArea);
-        return new ScrollPane(panel);
+        return createAnalysisPanel(
+                "Bài toán 2: Phân loại mức độ và loại thiệt hại",
+                "Phân loại các bài đăng theo nhóm thiệt hại và thống kê mức độ được đề cập.",
+                "damage_classification", "#e67e22");
     }
 
     // ==================== BÀI TOÁN 3 ====================
     private Node createProblem3Panel() {
-        VBox panel = new VBox(15);
-        panel.setPadding(new Insets(20));
-
-        Label titleLabel = sectionTitle("Bài toán 3: Mức hài lòng theo loại cứu trợ");
-        Label descLabel = new Label("Đánh giá tâm lý tích cực/tiêu cực theo 5 loại hàng cứu trợ.");
-        descLabel.setWrapText(true);
-
-        StackPane chartContainer = new StackPane();
-        chartContainer.setPrefHeight(400);
-        chartContainer.setStyle("-fx-border-color: #ddd; -fx-border-radius: 5;");
-
-        TextArea insightArea = new TextArea();
-        insightArea.setPromptText("Nhận xét sẽ hiển thị ở đây...");
-        insightArea.setPrefRowCount(6);
-        insightArea.setEditable(false);
-
-        Button analyzeBtn = new Button("😊 Phân tích");
-        analyzeBtn.setStyle(btnStyle("#27ae60"));
-        analyzeBtn.setPrefWidth(200);
-        analyzeBtn.setOnAction(e -> {
-            if (!ensureDataReady()) return;
-            runAnalysis("relief_satisfaction", chartContainer, insightArea);
-        });
-
-        panel.getChildren().addAll(titleLabel, descLabel, analyzeBtn,
-                new Separator(), chartContainer, insightArea);
-        return new ScrollPane(panel);
+        return createAnalysisPanel(
+                "Bài toán 3: Mức hài lòng theo loại cứu trợ",
+                "Đánh giá phản hồi tích cực, tiêu cực và trung lập theo từng loại cứu trợ.",
+                "relief_satisfaction", "#27ae60");
     }
 
     // ==================== BÀI TOÁN 4 ====================
     private Node createProblem4Panel() {
-        VBox panel = new VBox(15);
-        panel.setPadding(new Insets(20));
+        return createAnalysisPanel(
+                "Bài toán 4: Tâm lý theo loại cứu trợ theo thời gian",
+                "Theo dõi sự thay đổi của phản hồi đối với từng loại cứu trợ theo thời gian.",
+                "relief_sentiment_timeline", "#8e44ad");
+    }
 
-        Label titleLabel = sectionTitle("Bài toán 4: Tâm lý theo loại cứu trợ theo thời gian");
-        Label descLabel = new Label("Theo dõi tâm lý thay đổi theo thời gian cho từng loại cứu trợ.");
+    private Node createAnalysisPanel(String title, String description, String analyzerId, String buttonColor) {
+        Label titleLabel = sectionTitle(title);
+        Label descLabel = new Label(description);
         descLabel.setWrapText(true);
+        descLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #4b5563;");
 
         StackPane chartContainer = new StackPane();
-        chartContainer.setPrefHeight(450);
-        chartContainer.setStyle("-fx-border-color: #ddd; -fx-border-radius: 5;");
+        chartContainer.setMinHeight(480);
+        chartContainer.setPrefHeight(560);
+        chartContainer.setStyle("-fx-background-color: white; -fx-border-color: #d8dee9; " +
+                "-fx-border-radius: 6; -fx-background-radius: 6;");
+        HBox.setHgrow(chartContainer, Priority.ALWAYS);
+
+        Label insightTitle = new Label("Nhận xét phân tích");
+        insightTitle.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #243447;");
 
         TextArea insightArea = new TextArea();
-        insightArea.setPromptText("Nhận xét sẽ hiển thị ở đây...");
-        insightArea.setPrefRowCount(6);
+        insightArea.setPromptText("Nhận xét sẽ được hiển thị sau khi phân tích.");
         insightArea.setEditable(false);
+        insightArea.setWrapText(true);
+        insightArea.setPrefWidth(430);
+        insightArea.setMinWidth(340);
+        insightArea.setMaxWidth(500);
+        insightArea.setPrefHeight(520);
+        insightArea.setStyle("-fx-font-size: 14px; -fx-control-inner-background: white;");
+        VBox.setVgrow(insightArea, Priority.ALWAYS);
 
-        Button analyzeBtn = new Button("📉 Phân tích");
-        analyzeBtn.setStyle(btnStyle("#8e44ad"));
+        VBox insightBox = new VBox(10, insightTitle, insightArea);
+        insightBox.setPadding(new Insets(16));
+        insightBox.setStyle("-fx-background-color: #f8fafc; -fx-border-color: #d8dee9; " +
+                "-fx-border-radius: 6; -fx-background-radius: 6;");
+
+        HBox resultBox = new HBox(20, chartContainer, insightBox);
+        resultBox.setAlignment(Pos.CENTER);
+        resultBox.setFillHeight(true);
+        VBox.setVgrow(resultBox, Priority.ALWAYS);
+
+        Button analyzeBtn = new Button("Phân tích");
+        analyzeBtn.setStyle(btnStyle(buttonColor));
         analyzeBtn.setPrefWidth(200);
         analyzeBtn.setOnAction(e -> {
             if (!ensureDataReady()) return;
-            runAnalysis("relief_sentiment_timeline", chartContainer, insightArea);
+            runAnalysis(analyzerId, chartContainer, insightArea);
         });
 
-        panel.getChildren().addAll(titleLabel, descLabel, analyzeBtn,
-                new Separator(), chartContainer, insightArea);
-        return new ScrollPane(panel);
+        VBox content = new VBox(16, titleLabel, descLabel, analyzeBtn, new Separator(), resultBox);
+        content.setPadding(new Insets(24));
+        content.setMaxWidth(1500);
+        content.setFillWidth(true);
+
+        StackPane centered = new StackPane(content);
+        centered.setAlignment(Pos.TOP_CENTER);
+        centered.setPadding(new Insets(0, 20, 20, 20));
+
+        ScrollPane scrollPane = new ScrollPane(centered);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
+        scrollPane.setPannable(true);
+        scrollPane.setStyle("-fx-background-color: transparent;");
+        return scrollPane;
     }
 
     // ==================== ANALYSIS RUNNER ====================
@@ -615,136 +520,149 @@ public class MainFrame extends BorderPane {
 
     // ==================== INSIGHT GENERATION ====================
     private String generateTimelineInsight(Map<LocalDate, TimeSentimentData> data) {
-        if (data.isEmpty()) return "Không có dữ liệu để phân tích.";
+        if (data.isEmpty()) return noDataInsight();
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("=== NHẬN XÉT BÀI TOÁN 1: Thay đổi tâm lý theo thời gian ===\n\n");
+        int totalPos = data.values().stream().mapToInt(TimeSentimentData::getPositiveCount).sum();
+        int totalNeg = data.values().stream().mapToInt(TimeSentimentData::getNegativeCount).sum();
+        int totalNeu = data.values().stream().mapToInt(TimeSentimentData::getNeutralCount).sum();
+        int total = totalPos + totalNeg + totalNeu;
+        if (total == 0) return noDataInsight();
 
-        // Tìm ngày đỉnh tiêu cực
-        LocalDate peakNegDay = null;
-        int peakNeg = 0;
-        int totalPos = 0, totalNeg = 0, totalNeu = 0;
+        Map.Entry<LocalDate, TimeSentimentData> peakNegative = data.entrySet().stream()
+                .max(Comparator.comparingInt(e -> e.getValue().getNegativeCount()))
+                .orElse(null);
+        Map.Entry<LocalDate, TimeSentimentData> first = data.entrySet().iterator().next();
+        Map.Entry<LocalDate, TimeSentimentData> last = data.entrySet().stream().reduce((a, b) -> b).orElse(first);
+        int firstScore = sentimentScore(first.getValue());
+        int lastScore = sentimentScore(last.getValue());
 
-        for (Map.Entry<LocalDate, TimeSentimentData> entry : data.entrySet()) {
-            TimeSentimentData d = entry.getValue();
-            totalPos += d.getPositiveCount();
-            totalNeg += d.getNegativeCount();
-            totalNeu += d.getNeutralCount();
-            if (d.getNegativeCount() > peakNeg) {
-                peakNeg = d.getNegativeCount();
-                peakNegDay = entry.getKey();
-            }
+        StringBuilder sb = new StringBuilder("NHẬN XÉT TỔNG HỢP\n\n");
+        sb.append("Phạm vi phân tích gồm ").append(total).append(" bài đăng trong ")
+                .append(data.size()).append(" ngày có dữ liệu.\n\n");
+        sb.append("Cơ cấu cảm xúc:\n")
+                .append("- Tích cực: ").append(totalPos).append(" bài (").append(percent(totalPos, total)).append(").\n")
+                .append("- Tiêu cực: ").append(totalNeg).append(" bài (").append(percent(totalNeg, total)).append(").\n")
+                .append("- Trung lập: ").append(totalNeu).append(" bài (").append(percent(totalNeu, total)).append(").\n\n");
+        sb.append("Nhìn chung, ").append(dominantSentiment(totalPos, totalNeg, totalNeu)).append(". ");
+        sb.append("So sánh ngày đầu và ngày cuối có dữ liệu, xu hướng cảm xúc ")
+                .append(scoreTrend(firstScore, lastScore)).append(".\n");
+
+        if (peakNegative != null && peakNegative.getValue().getNegativeCount() > 0) {
+            sb.append("\nSố bài tiêu cực cao nhất được ghi nhận vào ngày ")
+                    .append(peakNegative.getKey().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))
+                    .append(", với ").append(peakNegative.getValue().getNegativeCount()).append(" bài. ")
+                    .append("Mốc này cần được đối chiếu với diễn biến thực tế trước khi đưa ra kết luận nguyên nhân.");
         }
-
-        sb.append("📊 Tổng cộng: ").append(totalPos + totalNeg + totalNeu).append(" bài đăng\n");
-        sb.append("   ✅ Tích cực: ").append(totalPos).append(" (")
-                .append(String.format("%.1f%%", totalPos * 100.0 / (totalPos + totalNeg + totalNeu))).append(")\n");
-        sb.append("   ❌ Tiêu cực: ").append(totalNeg).append(" (")
-                .append(String.format("%.1f%%", totalNeg * 100.0 / (totalPos + totalNeg + totalNeu))).append(")\n");
-        sb.append("   ⚪ Trung lập: ").append(totalNeu).append("\n\n");
-
-        if (peakNegDay != null) {
-            sb.append("📌 Đỉnh tiêu cực: ngày ").append(peakNegDay.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))
-                    .append(" (").append(peakNeg).append(" bài tiêu cực)\n");
-            sb.append("   → Phản ánh thời điểm bão đổ bộ mạnh nhất, thiệt hại nghiêm trọng.\n\n");
-        }
-
-        sb.append("💡 Ý nghĩa: Phân tích cho thấy tâm lý tiêu cực chiếm ưu thế trong giai đoạn đầu thảm họa, ")
-                .append("sau đó chuyển dần sang tích cực khi các hoạt động cứu trợ và phục hồi được triển khai.");
-
         return sb.toString();
     }
 
     private String generateDamageInsight(Map<DamageCategory, List<DamageReport>> data) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("=== NHẬN XÉT BÀI TOÁN 2: Phân loại thiệt hại ===\n\n");
-
         List<Map.Entry<DamageCategory, List<DamageReport>>> sorted = data.entrySet().stream()
+                .filter(e -> !e.getValue().isEmpty())
                 .sorted((a, b) -> b.getValue().size() - a.getValue().size())
                 .toList();
+        int total = sorted.stream().mapToInt(e -> e.getValue().size()).sum();
+        if (total == 0) return noDataInsight();
 
-        sb.append("📊 Xếp hạng loại thiệt hại (theo số lượng đề cập):\n");
+        StringBuilder sb = new StringBuilder("NHẬN XÉT TỔNG HỢP\n\n");
+        sb.append("Hệ thống ghi nhận ").append(total)
+                .append(" lượt phân loại thuộc ").append(sorted.size()).append(" nhóm thiệt hại.\n\n");
+        sb.append("Các nhóm được đề cập nhiều nhất:\n");
         int rank = 1;
         for (Map.Entry<DamageCategory, List<DamageReport>> entry : sorted) {
-            if (!entry.getValue().isEmpty()) {
-                sb.append("   ").append(rank++).append(". ").append(entry.getKey().getNameVi())
-                        .append(": ").append(entry.getValue().size()).append(" bài đăng\n");
-            }
+            sb.append(rank++).append(". ").append(entry.getKey().getNameVi())
+                    .append(": ").append(entry.getValue().size()).append(" lượt (")
+                    .append(percent(entry.getValue().size(), total)).append(").\n");
         }
 
-        if (!sorted.isEmpty() && !sorted.get(0).getValue().isEmpty()) {
-            sb.append("\n📌 Loại thiệt hại được đề cập nhiều nhất: ")
-                    .append(sorted.get(0).getKey().getNameVi()).append("\n");
-            sb.append("   → Cho thấy đây là vấn đề nghiêm trọng nhất cần ưu tiên khắc phục.\n");
-        }
-
-        sb.append("\n💡 Ý nghĩa: Phân tích giúp các cơ quan nhân đạo xác định loại thiệt hại ")
-                .append("được công chúng quan tâm nhiều nhất, từ đó ưu tiên phân bổ nguồn lực.");
-
+        Map.Entry<DamageCategory, List<DamageReport>> leading = sorted.get(0);
+        sb.append("\nNhóm ").append(leading.getKey().getNameVi())
+                .append(" có tần suất đề cập cao nhất trong tập dữ liệu. ")
+                .append("Kết quả phản ánh mức độ xuất hiện trong bài đăng, không trực tiếp đại diện cho mức độ thiệt hại thực tế. ")
+                .append("Cần kết hợp với dữ liệu hiện trường trước khi xác định thứ tự ưu tiên.");
         return sb.toString();
     }
 
     private String generateReliefInsight(Map<ReliefCategory, ReliefSentiment> data) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("=== NHẬN XÉT BÀI TOÁN 3: Hài lòng theo loại cứu trợ ===\n\n");
+        List<Map.Entry<ReliefCategory, ReliefSentiment>> available = data.entrySet().stream()
+                .filter(e -> e.getValue().getTotalCount() > 0)
+                .sorted(Comparator.comparingDouble((Map.Entry<ReliefCategory, ReliefSentiment> e) ->
+                        e.getValue().getSatisfactionRate()).reversed())
+                .toList();
+        if (available.isEmpty()) return noDataInsight();
 
-        for (Map.Entry<ReliefCategory, ReliefSentiment> entry : data.entrySet()) {
+        StringBuilder sb = new StringBuilder("NHẬN XÉT TỔNG HỢP\n\n");
+        sb.append("Có ").append(available.size()).append(" nhóm cứu trợ đủ dữ liệu để đánh giá.\n\n");
+        for (Map.Entry<ReliefCategory, ReliefSentiment> entry : available) {
             ReliefSentiment rs = entry.getValue();
-            if (rs.getTotalCount() > 0) {
-                sb.append("📦 ").append(entry.getKey().getNameVi()).append(":\n");
-                sb.append("   Tích cực: ").append(rs.getPositiveCount())
-                        .append(" | Tiêu cực: ").append(rs.getNegativeCount())
-                        .append(" | Tỷ lệ hài lòng: ")
-                        .append(String.format("%.1f%%", rs.getSatisfactionRate() * 100)).append("\n");
-            }
+            sb.append(entry.getKey().getNameVi()).append(": ")
+                    .append(rs.getPositiveCount()).append(" tích cực, ")
+                    .append(rs.getNegativeCount()).append(" tiêu cực, ")
+                    .append(rs.getNeutralCount()).append(" trung lập; tỷ lệ phản hồi tích cực ")
+                    .append(String.format("%.1f%%", rs.getSatisfactionRate() * 100)).append(".\n");
         }
 
-        // Tìm lĩnh vực ít hài lòng nhất
-        Optional<Map.Entry<ReliefCategory, ReliefSentiment>> leastSatisfied = data.entrySet().stream()
-                .filter(e -> e.getValue().getTotalCount() > 0)
-                .min(Comparator.comparingDouble(e -> e.getValue().getSatisfactionRate()));
-
-        Optional<Map.Entry<ReliefCategory, ReliefSentiment>> mostSatisfied = data.entrySet().stream()
-                .filter(e -> e.getValue().getTotalCount() > 0)
-                .max(Comparator.comparingDouble(e -> e.getValue().getSatisfactionRate()));
-
-        sb.append("\n📌 Lĩnh vực cần ưu tiên cải thiện: ");
-        leastSatisfied.ifPresent(e -> sb.append(e.getKey().getNameVi())
-                .append(" (").append(String.format("%.1f%%", e.getValue().getSatisfactionRate() * 100)).append(" hài lòng)\n"));
-
-        sb.append("📌 Lĩnh vực hiệu quả nhất: ");
-        mostSatisfied.ifPresent(e -> sb.append(e.getKey().getNameVi())
-                .append(" (").append(String.format("%.1f%%", e.getValue().getSatisfactionRate() * 100)).append(" hài lòng)\n"));
-
-        sb.append("\n💡 Ý nghĩa: Giúp ưu tiên phân bổ nguồn lực vào lĩnh vực có nhu cầu cấp bách nhất.");
-
+        Map.Entry<ReliefCategory, ReliefSentiment> highest = available.get(0);
+        Map.Entry<ReliefCategory, ReliefSentiment> lowest = available.get(available.size() - 1);
+        sb.append("\nTrong phạm vi dữ liệu hiện có, ").append(highest.getKey().getNameVi())
+                .append(" có tỷ lệ phản hồi tích cực cao nhất, trong khi ")
+                .append(lowest.getKey().getNameVi()).append(" có tỷ lệ thấp nhất. ")
+                .append("Kết quả nên được xem là tín hiệu phản hồi để khảo sát thêm, không phải kết luận trực tiếp về hiệu quả cứu trợ.");
         return sb.toString();
     }
 
     private String generateReliefTimelineInsight(
             Map<ReliefCategory, Map<LocalDate, TimeSentimentData>> data) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("=== NHẬN XÉT BÀI TOÁN 4: Tâm lý theo cứu trợ theo thời gian ===\n\n");
+        List<Map.Entry<ReliefCategory, Map<LocalDate, TimeSentimentData>>> available = data.entrySet().stream()
+                .filter(e -> !e.getValue().isEmpty())
+                .toList();
+        if (available.isEmpty()) return noDataInsight();
 
-        for (Map.Entry<ReliefCategory, Map<LocalDate, TimeSentimentData>> entry : data.entrySet()) {
+        StringBuilder sb = new StringBuilder("NHẬN XÉT TỔNG HỢP\n\n");
+        sb.append("Xu hướng phản hồi theo từng nhóm cứu trợ:\n");
+        for (Map.Entry<ReliefCategory, Map<LocalDate, TimeSentimentData>> entry : available) {
             Map<LocalDate, TimeSentimentData> timeline = entry.getValue();
-            if (timeline.isEmpty()) continue;
-
             int totalPos = timeline.values().stream().mapToInt(TimeSentimentData::getPositiveCount).sum();
             int totalNeg = timeline.values().stream().mapToInt(TimeSentimentData::getNegativeCount).sum();
-
-            sb.append("📦 ").append(entry.getKey().getNameVi()).append(": ");
-            if (totalPos > totalNeg) {
-                sb.append("Xu hướng TÍCH CỰC (tổng +").append(totalPos).append(" / -").append(totalNeg).append(")\n");
-            } else {
-                sb.append("Xu hướng TIÊU CỰC (tổng +").append(totalPos).append(" / -").append(totalNeg).append(")\n");
-            }
+            TimeSentimentData first = timeline.entrySet().iterator().next().getValue();
+            TimeSentimentData last = timeline.entrySet().stream().reduce((a, b) -> b).orElseThrow().getValue();
+            sb.append("- ").append(entry.getKey().getNameVi()).append(": ")
+                    .append(totalPos).append(" phản hồi tích cực và ").append(totalNeg)
+                    .append(" phản hồi tiêu cực; xu hướng ")
+                    .append(scoreTrend(sentimentScore(first), sentimentScore(last))).append(".\n");
         }
 
-        sb.append("\n💡 Ý nghĩa: Phân tích cho thấy hiệu quả logistics nhân đạo theo từng lĩnh vực qua thời gian. ")
-                .append("Lĩnh vực có tâm lý tiêu cực kéo dài cho thấy cần thêm nỗ lực cải thiện.");
-
+        sb.append("\nCác nhóm có xu hướng giảm hoặc duy trì nhiều phản hồi tiêu cực cần được kiểm tra thêm bằng dữ liệu vận hành và phản hồi trực tiếp. ")
+                .append("Biến động cảm xúc trên mạng xã hội chỉ phản ánh quan điểm trong tập bài đăng đã thu thập.");
         return sb.toString();
+    }
+
+    private String noDataInsight() {
+        return "Chưa có đủ dữ liệu phù hợp để đưa ra nhận xét. Vui lòng kiểm tra nguồn dữ liệu, khoảng thời gian và kết quả phân loại.";
+    }
+
+    private String percent(int value, int total) {
+        return total == 0 ? "0,0%" : String.format("%.1f%%", value * 100.0 / total);
+    }
+
+    private int sentimentScore(TimeSentimentData data) {
+        return data.getPositiveCount() - data.getNegativeCount();
+    }
+
+    private String scoreTrend(int firstScore, int lastScore) {
+        int difference = lastScore - firstScore;
+        if (difference > 0) return "cải thiện";
+        if (difference < 0) return "giảm";
+        return "ổn định";
+    }
+
+    private String dominantSentiment(int positive, int negative, int neutral) {
+        int max = Math.max(positive, Math.max(negative, neutral));
+        int ties = (positive == max ? 1 : 0) + (negative == max ? 1 : 0) + (neutral == max ? 1 : 0);
+        if (ties > 1) return "các nhóm cảm xúc có tỷ trọng tương đối cân bằng";
+        if (max == positive) return "phản hồi tích cực chiếm tỷ trọng cao nhất";
+        if (max == negative) return "phản hồi tiêu cực chiếm tỷ trọng cao nhất";
+        return "phản hồi trung lập chiếm tỷ trọng cao nhất";
     }
 
     // ==================== HELPER METHODS ====================
