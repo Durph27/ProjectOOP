@@ -1,0 +1,36 @@
+2026-06-14 01:17:20.165 [JavaFX Application Thread] INFO  com.humanitarian.config.AppConfig - Đã tải cấu hình ứng dụng thành công
+2026-06-14 01:17:20.189 [JavaFX Application Thread] INFO  c.h.sentiment.SentimentModelFactory - Đăng ký sentiment provider: dictionary (Dictionary-Based (Vietnamese))
+2026-06-14 01:17:20.501 [JavaFX Application Thread] INFO  c.h.sentiment.SentimentModelFactory - Đăng ký sentiment provider: python-api (Python API (PhoBERT))
+2026-06-14 01:17:20.503 [JavaFX Application Thread] INFO  c.h.analyzer.AnalyzerRegistry - Đăng ký analyzer: sentiment_timeline (Theo dõi tâm lý theo thời gian)
+2026-06-14 01:17:20.504 [JavaFX Application Thread] INFO  c.h.analyzer.AnalyzerRegistry - Đăng ký analyzer: damage_classification (Phân loại thiệt hại)
+2026-06-14 01:17:20.506 [JavaFX Application Thread] INFO  c.h.analyzer.AnalyzerRegistry - Đăng ký analyzer: relief_satisfaction (Mức hài lòng theo loại cứu trợ)
+2026-06-14 01:17:20.507 [JavaFX Application Thread] INFO  c.h.analyzer.AnalyzerRegistry - Đăng ký analyzer: relief_sentiment_timeline (Tâm lý theo loại cứu trợ theo thời gian)
+2026-06-14 01:17:37.195 [Thread-3] INFO  c.h.collector.CsvFileCollector - Bắt đầu thu thập từ CSV Import (2024-09-01 -> 2024-09-30)
+2026-06-14 01:17:37.222 [Thread-3] INFO  c.h.collector.CsvFileCollector - Thu thập được 182 bài đăng từ CSV Import
+2026-06-14 01:17:47.314 [JavaFX Application Thread] INFO  c.h.service.PreprocessingService - Bắt đầu tiền xử lý 182 bài đăng...
+2026-06-14 01:17:47.343 [JavaFX Application Thread] INFO  c.h.service.PreprocessingService - Đã tiền xử lý 182 bài đăng
+2026-06-14 01:17:52.750 [Thread-4] INFO  c.h.service.AnalysisService - Đang phân tích sentiment bằng: Python API (PhoBERT)
+2026-06-14 01:18:05.671 [Thread-4] INFO  c.h.service.AnalysisService - Đã gán sentiment cho 182 bài đăng
+2026-06-14 01:18:05.672 [Thread-4] INFO  c.h.service.AnalysisService - Chạy analyzer: sentiment_timeline - Theo dõi tâm lý theo thời gian
+2026-06-14 01:18:05.674 [Thread-4] INFO  c.h.service.AnalysisService - Analyzer sentiment_timeline hoàn thành
+2026-06-14 01:18:43.508 [Thread-5] INFO  c.h.service.AnalysisService - Chạy analyzer: damage_classification - Phân loại thiệt hại
+2026-06-14 01:18:43.537 [Thread-5] INFO  c.h.service.AnalysisService - Analyzer damage_classification hoàn thành
+2026-06-14 01:19:11.287 [Thread-6] INFO  c.h.service.AnalysisService - Chạy analyzer: relief_satisfaction - Mức hài lòng theo loại cứu trợ
+2026-06-14 01:19:11.294 [Thread-6] INFO  c.h.service.AnalysisService - Analyzer relief_satisfaction hoàn thành
+2026-06-14 01:19:42.303 [Thread-7] INFO  c.h.service.AnalysisService - Chạy analyzer: relief_sentiment_timeline - Tâm lý theo loại cứu trợ theo thời gian
+2026-06-14 01:19:42.308 [Thread-7] INFO  c.h.service.AnalysisService - Analyzer relief_sentiment_timeline hoàn thành
+2026-06-14 03:55:08.585 [JavaFX Application Thread] INFO  com.humanitarian.config.AppConfig - Đã tải cấu hình ứng dụng thành công
+2026-06-14 03:55:08.603 [JavaFX Application Thread] INFO  c.h.sentiment.SentimentModelFactory - Đăng ký sentiment provider: dictionary (Dictionary-Based (Vietnamese))
+2026-06-14 03:55:08.802 [JavaFX Application Thread] INFO  c.h.sentiment.SentimentModelFactory - Đăng ký sentiment provider: python-api (Python API (PhoBERT))
+2026-06-14 03:55:08.803 [JavaFX Application Thread] INFO  c.h.analyzer.AnalyzerRegistry - Đăng ký analyzer: sentiment_timeline (Theo dõi tâm lý theo thời gian)
+2026-06-14 03:55:08.806 [JavaFX Application Thread] INFO  c.h.analyzer.AnalyzerRegistry - Đăng ký analyzer: damage_classification (Phân loại thiệt hại)
+2026-06-14 03:55:08.808 [JavaFX Application Thread] INFO  c.h.analyzer.AnalyzerRegistry - Đăng ký analyzer: relief_satisfaction (Mức hài lòng theo loại cứu trợ)
+2026-06-14 03:55:08.809 [JavaFX Application Thread] INFO  c.h.analyzer.AnalyzerRegistry - Đăng ký analyzer: relief_sentiment_timeline (Tâm lý theo loại cứu trợ theo thời gian)
+2026-06-14 03:55:24.022 [Thread-3] INFO  c.h.collector.CsvFileCollector - Bắt đầu thu thập từ CSV Import (2024-09-01 -> 2024-09-30)
+2026-06-14 03:55:24.044 [Thread-3] INFO  c.h.collector.CsvFileCollector - Thu thập được 182 bài đăng từ CSV Import
+2026-06-14 03:55:51.710 [JavaFX Application Thread] INFO  c.h.service.PreprocessingService - Bắt đầu tiền xử lý 182 bài đăng...
+2026-06-14 03:55:51.744 [JavaFX Application Thread] INFO  c.h.service.PreprocessingService - Đã tiền xử lý 182 bài đăng
+2026-06-14 03:56:01.251 [Thread-4] INFO  c.h.service.AnalysisService - Đang phân tích sentiment bằng: Python API (PhoBERT)
+2026-06-14 03:56:13.613 [Thread-4] INFO  c.h.service.AnalysisService - Đã gán sentiment cho 182 bài đăng
+2026-06-14 03:56:13.613 [Thread-4] INFO  c.h.service.AnalysisService - Chạy analyzer: sentiment_timeline - Theo dõi tâm lý theo thời gian
+2026-06-14 03:56:13.615 [Thread-4] INFO  c.h.service.AnalysisService - Analyzer sentiment_timeline hoàn thành
