@@ -16,7 +16,7 @@ public class FacebookCollector extends AbstractCollector {
 
     @Override
     public boolean isAvailable() {
-        return false; // Cần Facebook Graph API access token
+        return false;
     }
 
     @Override

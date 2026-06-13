@@ -16,7 +16,7 @@ public class YoutubeCollector extends AbstractCollector {
 
     @Override
     public boolean isAvailable() {
-        return false; // Cần YouTube Data API key
+        return false;
     }
 
     @Override

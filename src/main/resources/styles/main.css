@@ -7,7 +7,74 @@
 .root {
     -fx-font-family: "Segoe UI", "System", sans-serif;
     -fx-font-size: 14px;
-    -fx-background-color: #f5f6fa;
+    -fx-background-color: #f4f7fb;
+}
+
+.section-subtitle {
+    -fx-text-fill: #64748b;
+    -fx-font-size: 14px;
+}
+
+.content-card {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 10;
+    -fx-padding: 18;
+    -fx-effect: dropshadow(gaussian, rgba(15, 23, 42, 0.06), 10, 0, 0, 3);
+}
+
+.card-title {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e293b;
+}
+
+.muted-label {
+    -fx-text-fill: #64748b;
+    -fx-font-size: 12px;
+}
+
+.keyword-container {
+    -fx-padding: 4 0 0 0;
+}
+
+.keyword-chip {
+    -fx-background-color: #eaf4ff;
+    -fx-text-fill: #1769aa;
+    -fx-border-color: #c9e3fb;
+    -fx-background-radius: 14;
+    -fx-border-radius: 14;
+    -fx-padding: 5 11;
+    -fx-font-size: 12px;
+}
+
+.processor-option {
+    -fx-background-color: #f8fafc;
+    -fx-border-color: #dbe5ef;
+    -fx-border-radius: 7;
+    -fx-background-radius: 7;
+    -fx-padding: 9 12;
+}
+
+.metric-card {
+    -fx-background-color: white;
+    -fx-background-radius: 9;
+    -fx-border-color: #dbe5ef;
+    -fx-border-radius: 9;
+    -fx-padding: 14 18;
+    -fx-min-width: 180;
+}
+
+.metric-title {
+    -fx-text-fill: #64748b;
+    -fx-font-size: 12px;
+}
+
+.metric-value {
+    -fx-text-fill: #1e3a5f;
+    -fx-font-size: 23px;
+    -fx-font-weight: bold;
 }
 
 /* Tab Pane */
@@ -44,6 +111,31 @@
     -fx-background-radius: 5;
     -fx-cursor: hand;
     -fx-font-size: 13px;
+}
+
+.primary-button {
+    -fx-background-color: #1f9d68;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10 20;
+    -fx-background-radius: 7;
+}
+
+.secondary-button {
+    -fx-background-color: #267bbd;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10 18;
+    -fx-background-radius: 7;
+}
+
+.ghost-button {
+    -fx-background-color: white;
+    -fx-text-fill: #334155;
+    -fx-border-color: #cbd5e1;
+    -fx-border-radius: 7;
+    -fx-background-radius: 7;
+    -fx-padding: 10 18;
 }
 
 .button:hover {
@@ -84,8 +176,10 @@
 /* Tables */
 .table-view {
     -fx-background-color: white;
-    -fx-border-color: #dcdde1;
-    -fx-border-radius: 5;
+    -fx-border-color: #dbe5ef;
+    -fx-border-radius: 7;
+    -fx-background-radius: 7;
+    -fx-fixed-cell-size: 36;
 }
 
 .table-view .column-header {
@@ -95,7 +189,8 @@
 .table-view .column-header .label {
     -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-font-size: 12px;
+    -fx-font-size: 13px;
+    -fx-padding: 7 5;
 }
 
 .table-row-cell:odd {
@@ -170,7 +265,7 @@
 }
 
 .scroll-pane > .viewport {
-    -fx-background-color: #f5f6fa;
+    -fx-background-color: #f4f7fb;
 }
 
 /* Progress bar */

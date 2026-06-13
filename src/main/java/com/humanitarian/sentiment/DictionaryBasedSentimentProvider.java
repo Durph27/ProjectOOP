@@ -12,7 +12,7 @@ import java.util.*;
  * Hoạt động hoàn toàn offline, không cần Python hoặc API bên ngoài.
  * 
  * Ưu điểm: Nhanh, đơn giản, chạy ngay
- * Nhược điểm: Không hiểu ngữ cảnh phức tạp, không xử lý tốt phủ định/mỉa mai
+ * Nhược điểm: Không hiểu ngữ cảnh phức tạp, không xử lý tốt phủ định
  * 
  * Có thể thay thế bằng PythonApiSentimentProvider để có độ chính xác cao hơn.
  */

@@ -26,7 +26,6 @@ D:\ProjectOOP\src\main\java\com\humanitarian\model\SentimentResult.java
 D:\ProjectOOP\src\main\java\com\humanitarian\model\ReliefSentiment.java
 D:\ProjectOOP\src\main\java\com\humanitarian\service\PreprocessingService.java
 D:\ProjectOOP\src\main\java\com\humanitarian\analyzer\AnalyzerRegistry.java
-D:\ProjectOOP\src\main\java\com\humanitarian\Launcher.java
 D:\ProjectOOP\src\main\java\com\humanitarian\model\SocialMediaPost.java
 D:\ProjectOOP\src\main\java\com\humanitarian\model\TimeSentimentData.java
 D:\ProjectOOP\src\main\java\com\humanitarian\sentiment\PythonApiSentimentProvider.java

@@ -123,42 +123,62 @@ public class MainFrame extends BorderPane {
 
     // ==================== COLLECTION ====================
     private Node createCollectionPanel() {
-        VBox panel = new VBox(15);
-        panel.setPadding(new Insets(20));
+        VBox content = new VBox(18);
+        content.setPadding(new Insets(24));
+        content.setMaxWidth(1500);
+        content.setFillWidth(true);
 
         Label titleLabel = sectionTitle("Thu Thập Dữ Liệu");
+        Label subtitle = new Label("Chọn nguồn CSV, kiểm tra bộ từ khóa và xem dữ liệu đã thu thập.");
+        subtitle.getStyleClass().add("section-subtitle");
 
-        // File chooser
-        HBox fileBox = new HBox(10);
+        HBox fileBox = new HBox(12);
         fileBox.setAlignment(Pos.CENTER_LEFT);
         TextField fileField = new TextField("data/sample/yagi_sample.csv");
-        fileField.setPrefWidth(400);
-        Button browseBtn = new Button("📁 Chọn file CSV");
-        browseBtn.setStyle(btnStyle("#3498db"));
+        HBox.setHgrow(fileField, Priority.ALWAYS);
+        Button browseBtn = new Button("Chọn file CSV");
+        browseBtn.getStyleClass().add("secondary-button");
         browseBtn.setOnAction(e -> {
             FileChooser fc = new FileChooser();
             fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
             File file = fc.showOpenDialog(getScene().getWindow());
             if (file != null) fileField.setText(file.getAbsolutePath());
         });
-        fileBox.getChildren().addAll(new Label("File dữ liệu:"), fileField, browseBtn);
+        fileBox.getChildren().addAll(fileField, browseBtn);
 
-        // Keywords display
-        TextArea keywordsArea = new TextArea(String.join(", ", config.getKeywords()));
-        keywordsArea.setPrefRowCount(3);
-        keywordsArea.setEditable(false);
+        VBox sourceCard = card("Nguồn dữ liệu", fileBox);
 
-        // Collect button
-        Button collectBtn = new Button("▶ Thu thập dữ liệu");
-        collectBtn.setStyle(btnStyle("#2ecc71"));
-        collectBtn.setPrefWidth(200);
+        FlowPane keywordPane = new FlowPane(8, 8);
+        keywordPane.getStyleClass().add("keyword-container");
+        for (String keyword : config.getKeywords()) {
+            Label chip = new Label(keyword);
+            chip.getStyleClass().add("keyword-chip");
+            keywordPane.getChildren().add(chip);
+        }
+        Label keywordCount = new Label(config.getKeywords().size() + " từ khóa đang được sử dụng");
+        keywordCount.getStyleClass().add("muted-label");
+        VBox keywordCard = card("Bộ từ khóa thu thập", keywordCount, keywordPane);
 
-        // Results table
+        Button collectBtn = new Button("Thu thập dữ liệu");
+        collectBtn.getStyleClass().add("primary-button");
+        collectBtn.setPrefWidth(210);
+
         TableView<SocialMediaPost> table = createPostsTable();
+        table.setPrefHeight(540);
+        table.setMinHeight(420);
+        VBox.setVgrow(table, Priority.ALWAYS);
+        Label resultCount = new Label("Chưa có dữ liệu");
+        resultCount.getStyleClass().add("muted-label");
+        HBox resultHeader = new HBox(resultCount);
+        resultHeader.setAlignment(Pos.CENTER_RIGHT);
+        VBox resultCard = card("Dữ liệu thu thập", resultHeader, table);
+        VBox.setVgrow(resultCard, Priority.ALWAYS);
 
         collectBtn.setOnAction(e -> {
             String filePath = fileField.getText();
             log("Đang thu thập từ: " + filePath);
+            collectBtn.setDisable(true);
+            resultCount.setText("Đang tải dữ liệu...");
 
             CsvFileCollector csvCollector = (CsvFileCollector) DataCollectorFactory.getInstance().get("csv");
             csvCollector.setFilePath(filePath);
@@ -168,84 +188,131 @@ public class MainFrame extends BorderPane {
                 Platform.runLater(() -> {
                     currentPosts = new ArrayList<>(posts);
                     table.setItems(FXCollections.observableArrayList(posts));
+                    resultCount.setText(posts.size() + " bài đăng");
+                    collectBtn.setDisable(false);
                     log("Thu thập thành công: " + posts.size() + " bài đăng");
                     setStatus("Đã tải " + posts.size() + " bài đăng");
                 });
             }).start();
         });
 
-        panel.getChildren().addAll(titleLabel, fileBox,
-                new Label("Từ khóa:"), keywordsArea,
-                collectBtn, new Separator(),
-                new Label("Dữ liệu thu thập:"), table);
-        return new ScrollPane(panel);
+        HBox actionRow = new HBox(collectBtn);
+        actionRow.setAlignment(Pos.CENTER);
+        content.getChildren().addAll(titleLabel, subtitle, sourceCard, keywordCard, actionRow, resultCard);
+
+        StackPane centered = new StackPane(content);
+        centered.setAlignment(Pos.TOP_CENTER);
+        ScrollPane scrollPane = new ScrollPane(centered);
+        scrollPane.setFitToWidth(true);
+        return scrollPane;
     }
 
     // ==================== PREPROCESSING ====================
     private Node createPreprocessingPanel() {
-        VBox panel = new VBox(15);
-        panel.setPadding(new Insets(20));
+        VBox content = new VBox(18);
+        content.setPadding(new Insets(24));
+        content.setMaxWidth(1500);
+        content.setFillWidth(true);
 
         Label titleLabel = sectionTitle("Tiền Xử Lý Dữ Liệu");
+        Label subtitle = new Label("Chuẩn hóa nội dung, so sánh trước và sau, đồng thời theo dõi mức giảm dữ liệu.");
+        subtitle.getStyleClass().add("section-subtitle");
 
-        // Preprocessor list with checkboxes
-        VBox checkboxes = new VBox(8);
+        FlowPane checkboxes = new FlowPane(12, 12);
         List<String> enabled = config.getEnabledPreprocessors();
         Map<String, CheckBox> cbMap = new LinkedHashMap<>();
 
-        Map<String, String> descriptions = Map.of(
-                "html_cleaner", "Loại bỏ HTML tags và entities",
-                "url_remover", "Loại bỏ URLs",
-                "emoji_handler", "Chuyển đổi emoji thành từ khóa cảm xúc",
-                "vietnamese_normalizer", "Chuẩn hóa Unicode, lowercase, ký tự lặp",
-                "stopword_remover", "Loại bỏ stop words tiếng Việt"
-        );
+        Map<String, String> descriptions = new LinkedHashMap<>();
+        descriptions.put("html_cleaner", "Loại bỏ HTML tags và entities");
+        descriptions.put("url_remover", "Loại bỏ URLs");
+        descriptions.put("emoji_handler", "Chuyển emoji thành từ khóa cảm xúc");
+        descriptions.put("vietnamese_normalizer", "Chuẩn hóa Unicode và chữ thường");
+        descriptions.put("stopword_remover", "Loại bỏ stop words tiếng Việt");
 
         for (Map.Entry<String, String> desc : descriptions.entrySet()) {
-            CheckBox cb = new CheckBox(desc.getKey() + " - " + desc.getValue());
+            CheckBox cb = new CheckBox(desc.getValue());
             cb.setSelected(enabled.contains(desc.getKey()));
+            cb.getStyleClass().add("processor-option");
             cbMap.put(desc.getKey(), cb);
             checkboxes.getChildren().add(cb);
         }
+        VBox optionsCard = card("Các bước tiền xử lý", checkboxes);
 
-        // Preview
         TextArea beforeArea = new TextArea();
-        beforeArea.setPromptText("Nội dung trước tiền xử lý...");
-        beforeArea.setPrefRowCount(3);
+        beforeArea.setPromptText("Nhập nội dung cần thử nghiệm...");
+        beforeArea.setWrapText(true);
+        beforeArea.setPrefRowCount(6);
 
         TextArea afterArea = new TextArea();
-        afterArea.setPromptText("Nội dung sau tiền xử lý...");
-        afterArea.setPrefRowCount(3);
+        afterArea.setPromptText("Kết quả sau tiền xử lý...");
+        afterArea.setWrapText(true);
+        afterArea.setPrefRowCount(6);
         afterArea.setEditable(false);
 
-        Button testBtn = new Button("🔍 Thử nghiệm");
-        testBtn.setStyle(btnStyle("#9b59b6"));
+        Button testBtn = new Button("Chạy thử nghiệm");
+        testBtn.getStyleClass().add("secondary-button");
         testBtn.setOnAction(e -> {
+            applySelectedPreprocessors(cbMap);
             String result = preprocessingService.preprocess(beforeArea.getText());
             afterArea.setText(result);
         });
 
-        // Process all button
-        Button processBtn = new Button("⚙️ Tiền xử lý toàn bộ dữ liệu");
-        processBtn.setStyle(btnStyle("#2ecc71"));
-        processBtn.setPrefWidth(250);
+        VBox beforeBox = card("Nội dung trước", beforeArea);
+        VBox afterBox = card("Nội dung sau", afterArea);
+        HBox previewBox = new HBox(16, beforeBox, afterBox);
+        HBox.setHgrow(beforeBox, Priority.ALWAYS);
+        HBox.setHgrow(afterBox, Priority.ALWAYS);
+        beforeBox.setMaxWidth(Double.MAX_VALUE);
+        afterBox.setMaxWidth(Double.MAX_VALUE);
+
+        Label postsMetric = metricValue("0");
+        Label beforeMetric = metricValue("0");
+        Label afterMetric = metricValue("0");
+        Label reductionMetric = metricValue("0%");
+        HBox metrics = new HBox(14,
+                metricCard("Bài đăng", postsMetric),
+                metricCard("Từ trước xử lý", beforeMetric),
+                metricCard("Từ sau xử lý", afterMetric),
+                metricCard("Mức rút gọn", reductionMetric));
+        for (Node node : metrics.getChildren()) HBox.setHgrow(node, Priority.ALWAYS);
+
+        TableView<SocialMediaPost> comparisonTable = createPreprocessingComparisonTable();
+        comparisonTable.setPrefHeight(430);
+        VBox comparisonCard = card("Đối chiếu dữ liệu trước và sau", comparisonTable);
+
+        Button processBtn = new Button("Tiền xử lý toàn bộ dữ liệu");
+        processBtn.getStyleClass().add("primary-button");
+        processBtn.setPrefWidth(260);
         processBtn.setOnAction(e -> {
             if (currentPosts.isEmpty()) {
                 showAlert("Chưa có dữ liệu. Vui lòng thu thập dữ liệu trước.");
                 return;
             }
+            applySelectedPreprocessors(cbMap);
             preprocessingService.preprocess(currentPosts);
+            comparisonTable.setItems(FXCollections.observableArrayList(currentPosts));
+            comparisonTable.refresh();
+            updatePreprocessingMetrics(postsMetric, beforeMetric, afterMetric, reductionMetric);
             log("Tiền xử lý hoàn tất: " + currentPosts.size() + " bài đăng");
             setStatus("Đã tiền xử lý " + currentPosts.size() + " bài đăng");
         });
 
-        panel.getChildren().addAll(titleLabel,
-                new Label("Các bước tiền xử lý:"), checkboxes,
-                new Separator(),
-                new Label("Thử nghiệm:"), beforeArea, testBtn, afterArea,
-                new Separator(),
-                processBtn);
-        return new ScrollPane(panel);
+        Button loadDataBtn = new Button("Hiển thị dữ liệu hiện tại");
+        loadDataBtn.getStyleClass().add("ghost-button");
+        loadDataBtn.setOnAction(e -> {
+            comparisonTable.setItems(FXCollections.observableArrayList(currentPosts));
+            updatePreprocessingMetrics(postsMetric, beforeMetric, afterMetric, reductionMetric);
+        });
+
+        HBox actionRow = new HBox(12, testBtn, loadDataBtn, processBtn);
+        actionRow.setAlignment(Pos.CENTER);
+        content.getChildren().addAll(titleLabel, subtitle, optionsCard, previewBox, actionRow, metrics, comparisonCard);
+
+        StackPane centered = new StackPane(content);
+        centered.setAlignment(Pos.TOP_CENTER);
+        ScrollPane scrollPane = new ScrollPane(centered);
+        scrollPane.setFitToWidth(true);
+        return scrollPane;
     }
 
     // ==================== BÀI TOÁN 1 ====================
@@ -682,42 +749,122 @@ public class MainFrame extends BorderPane {
 
     private TableView<SocialMediaPost> createPostsTable() {
         TableView<SocialMediaPost> table = new TableView<>();
-        table.setPrefHeight(300);
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
+        table.setPlaceholder(new Label("Chưa có dữ liệu thu thập"));
 
         TableColumn<SocialMediaPost, String> idCol = new TableColumn<>("ID");
         idCol.setCellValueFactory(cd -> new javafx.beans.property.SimpleStringProperty(cd.getValue().getId()));
-        idCol.setPrefWidth(50);
+        idCol.setPrefWidth(80);
 
         TableColumn<SocialMediaPost, String> platformCol = new TableColumn<>("Nền tảng");
         platformCol.setCellValueFactory(cd -> new javafx.beans.property.SimpleStringProperty(
                 cd.getValue().getPlatform() != null
                         ? config.getPlatformDisplayName(cd.getValue().getPlatform()) : ""));
-        platformCol.setPrefWidth(80);
+        platformCol.setPrefWidth(120);
 
         TableColumn<SocialMediaPost, String> contentCol = new TableColumn<>("Nội dung");
         contentCol.setCellValueFactory(cd -> new javafx.beans.property.SimpleStringProperty(
                 cd.getValue().getRawContent()));
-        contentCol.setPrefWidth(400);
+        contentCol.setPrefWidth(650);
 
         TableColumn<SocialMediaPost, String> dateCol = new TableColumn<>("Ngày");
         dateCol.setCellValueFactory(cd -> new javafx.beans.property.SimpleStringProperty(
                 cd.getValue().getTimestamp() != null ?
                         cd.getValue().getTimestamp().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) : ""));
-        dateCol.setPrefWidth(90);
+        dateCol.setPrefWidth(120);
 
         TableColumn<SocialMediaPost, String> authorCol = new TableColumn<>("Tác giả");
         authorCol.setCellValueFactory(cd -> new javafx.beans.property.SimpleStringProperty(
                 cd.getValue().getAuthor()));
-        authorCol.setPrefWidth(80);
+        authorCol.setPrefWidth(130);
 
         TableColumn<SocialMediaPost, String> sentimentCol = new TableColumn<>("Sentiment");
         sentimentCol.setCellValueFactory(cd -> new javafx.beans.property.SimpleStringProperty(
                 cd.getValue().getSentiment() != null
                         ? config.getSentimentNameVi(cd.getValue().getSentiment()) : "—"));
-        sentimentCol.setPrefWidth(80);
+        sentimentCol.setPrefWidth(120);
 
         table.getColumns().addAll(idCol, platformCol, contentCol, dateCol, authorCol, sentimentCol);
         return table;
+    }
+
+    private TableView<SocialMediaPost> createPreprocessingComparisonTable() {
+        TableView<SocialMediaPost> table = new TableView<>();
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
+        table.setPlaceholder(new Label("Thu thập dữ liệu, sau đó chọn “Hiển thị dữ liệu hiện tại”"));
+
+        TableColumn<SocialMediaPost, String> idCol = new TableColumn<>("ID");
+        idCol.setCellValueFactory(cd -> new javafx.beans.property.SimpleStringProperty(cd.getValue().getId()));
+        idCol.setPrefWidth(90);
+
+        TableColumn<SocialMediaPost, String> beforeCol = new TableColumn<>("Nội dung trước tiền xử lý");
+        beforeCol.setCellValueFactory(cd -> new javafx.beans.property.SimpleStringProperty(
+                cd.getValue().getRawContent() != null ? cd.getValue().getRawContent() : ""));
+        beforeCol.setPrefWidth(650);
+
+        TableColumn<SocialMediaPost, String> afterCol = new TableColumn<>("Nội dung sau tiền xử lý");
+        afterCol.setCellValueFactory(cd -> new javafx.beans.property.SimpleStringProperty(
+                cd.getValue().getContent() != null ? cd.getValue().getContent() : ""));
+        afterCol.setPrefWidth(650);
+
+        table.getColumns().addAll(idCol, beforeCol, afterCol);
+        return table;
+    }
+
+    private VBox card(String title, Node... children) {
+        Label titleLabel = new Label(title);
+        titleLabel.getStyleClass().add("card-title");
+        VBox box = new VBox(12);
+        box.getStyleClass().add("content-card");
+        box.getChildren().add(titleLabel);
+        box.getChildren().addAll(children);
+        return box;
+    }
+
+    private VBox metricCard(String title, Label value) {
+        Label titleLabel = new Label(title);
+        titleLabel.getStyleClass().add("metric-title");
+        VBox card = new VBox(5, titleLabel, value);
+        card.getStyleClass().add("metric-card");
+        card.setMaxWidth(Double.MAX_VALUE);
+        return card;
+    }
+
+    private Label metricValue(String value) {
+        Label label = new Label(value);
+        label.getStyleClass().add("metric-value");
+        return label;
+    }
+
+    private void applySelectedPreprocessors(Map<String, CheckBox> checkboxes) {
+        List<String> selected = checkboxes.entrySet().stream()
+                .filter(entry -> entry.getValue().isSelected())
+                .map(Map.Entry::getKey)
+                .toList();
+        preprocessingService.getChain().setEnabledPreprocessors(selected);
+    }
+
+    private void updatePreprocessingMetrics(Label postsMetric, Label beforeMetric,
+                                            Label afterMetric, Label reductionMetric) {
+        long beforeWords = currentPosts.stream()
+                .map(SocialMediaPost::getRawContent)
+                .mapToLong(this::countWords)
+                .sum();
+        long afterWords = currentPosts.stream()
+                .map(SocialMediaPost::getContent)
+                .mapToLong(this::countWords)
+                .sum();
+        double reduction = beforeWords == 0 ? 0 : (beforeWords - afterWords) * 100.0 / beforeWords;
+
+        postsMetric.setText(String.format("%,d", currentPosts.size()));
+        beforeMetric.setText(String.format("%,d", beforeWords));
+        afterMetric.setText(String.format("%,d", afterWords));
+        reductionMetric.setText(String.format("%.1f%%", reduction));
+    }
+
+    private long countWords(String text) {
+        if (text == null || text.isBlank()) return 0;
+        return text.trim().split("\\s+").length;
     }
 
     private void log(String message) {

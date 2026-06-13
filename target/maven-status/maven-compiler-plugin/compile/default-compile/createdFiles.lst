@@ -1,6 +1,5 @@
 com\humanitarian\analyzer\Analyzer.class
 com\humanitarian\collector\FacebookCollector.class
-com\humanitarian\Launcher.class
 com\humanitarian\analyzer\ReliefSentimentTimelineAnalyzer.class
 com\humanitarian\collector\AbstractCollector.class
 com\humanitarian\model\CategoryDefinition.class

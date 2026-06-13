@@ -35,11 +35,6 @@ public class TwitterCollector extends AbstractCollector {
             return List.of();
         }
 
-        // TODO: Implement Twitter API v2 search
-        // Sử dụng OkHttp để gọi Twitter API:
-        // GET https://api.twitter.com/2/tweets/search/recent
-        // Query: keywords joined by " OR "
-        // start_time / end_time: ISO 8601
         logger.info("Twitter collector chưa được implement. Sử dụng CSV collector thay thế.");
         return List.of();
     }

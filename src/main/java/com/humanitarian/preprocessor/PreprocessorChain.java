@@ -19,6 +19,7 @@ public class PreprocessorChain {
     private static final Logger logger = LoggerFactory.getLogger(PreprocessorChain.class);
     private final List<TextPreprocessor> processors = new ArrayList<>();
     private final List<String> enabledNames = new ArrayList<>();
+    private boolean enabledSelectionConfigured;
 
     /**
      * Thêm preprocessor vào chain.
@@ -34,6 +35,7 @@ public class PreprocessorChain {
     public void setEnabledPreprocessors(List<String> names) {
         enabledNames.clear();
         enabledNames.addAll(names);
+        enabledSelectionConfigured = true;
     }
 
     /**
@@ -57,7 +59,7 @@ public class PreprocessorChain {
 
     private boolean isEnabled(TextPreprocessor processor) {
         // Nếu không có config, bật tất cả
-        if (enabledNames.isEmpty()) return true;
+        if (!enabledSelectionConfigured) return true;
         return enabledNames.contains(processor.getName());
     }
 
